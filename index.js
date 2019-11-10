@@ -19,7 +19,6 @@ app.get('/test',(req,res)=>{
     console.log('kek')
     res.render('test')
 })
-
 app.listen(8080,()=>{
     console.log('Сервер работает')
 })

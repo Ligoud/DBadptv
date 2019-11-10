@@ -1,6 +1,4 @@
 @font-face{
-    font-family: MyFont;
-    src: url('Merriweather-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+    font-family: 'MyFont';
+    src: url('./Merriweather-Regular.ttf');
 }

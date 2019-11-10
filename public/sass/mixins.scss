@@ -2,3 +2,24 @@
     padding-top: $top;
     padding-bottom: $bottom;
 }
+@mixin paddingH($left, $right) {
+    padding-top: $left;
+    padding-bottom: $right;
+}
+@mixin SizeW ($val) {
+    min-width: $val;
+    max-width: $val;
+}
+@mixin SizeH ($val) {
+    min-height: $val;
+    max-height: $val;
+}
+
+//nest 
+%HideScroll{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar{
+        width: 0px;
+    }
+}

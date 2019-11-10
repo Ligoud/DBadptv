@@ -15,8 +15,8 @@ a {
 }
 
 a:hover {
-  background: -webkit-gradient(linear, left top, right bottom, from(#4bcffa), to(#0fbcf9));
-  background: linear-gradient(to bottom right, #4bcefa88, #0fbaf97c);
+  background: -webkit-gradient(linear, left top, right bottom, from(#0fbaf97c), to(#4bcefa88));
+  background: linear-gradient(to bottom right, #0fbaf97c, #4bcefa88);
   font-size: 20px;
   color: gray;
   border: 2px dotted black;

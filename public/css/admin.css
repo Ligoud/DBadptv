@@ -1,0 +1,114 @@
+.questBox {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.questBox::-webkit-scrollbar {
+  width: 0px;
+}
+
+@font-face {
+  font-family: 'MyFont';
+  src: url("../fonts/Merriweather-Regular.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.settingsBox {
+  position: absolute;
+  margin-top: 15vh;
+  margin-left: 70vw;
+  min-width: 25vw;
+  max-width: 25vw;
+  min-height: 70vh;
+  max-height: 70vh;
+  border: 1px solid black;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.questBox {
+  position: absolute;
+  margin-top: 15vh;
+  min-width: 60vw;
+  max-width: 60vw;
+  min-height: 70vh;
+  max-height: 70vh;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-left: 5vw;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  overflow-y: scroll;
+}
+
+.row {
+  position: relative;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  font-family: 'MyFont';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 17px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 20px;
+  text-align: center;
+}
+
+@media (max-width: 575px) {
+  .row {
+    font-size: 10px;
+  }
+}
+
+.questPart {
+  background: #a4b0be70;
+  position: relative;
+  display: inline-block;
+  min-width: 80%;
+  max-width: 80%;
+  border: 1px solid black;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.questPart:hover {
+  background: #a4b0be;
+}
+
+.delete {
+  background: #ff475659;
+  position: relative;
+  display: inline-block;
+  border: 1px solid black;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-width: 10%;
+  max-width: 10%;
+  border-radius: 10px;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.delete:hover {
+  background: #ff4757;
+}
+
+input[type='radio'] {
+  height: 25px;
+  width: 25px;
+}
+/*# sourceMappingURL=admin.css.map */
