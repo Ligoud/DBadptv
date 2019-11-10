@@ -1,0 +1,36 @@
+@import "mixins";
+@import "btns";
+
+$pageBg: #63cdda;
+
+*{
+    padding: 0;
+    margin: 0;
+}
+#center {
+    
+    position: relative;
+    border: 1px solid black;
+    box-shadow: 0 0 5px 0 black;
+    width: 500px;
+    height: 600px;
+    @media (max-width: 575px) {
+        width: 400px;
+        height: 500px;
+    }
+    margin: auto;
+    margin-top: 5%;
+}
+a{
+    z-index: 1;
+    @extend %btns;
+    &.b1{
+        margin-top: 30%;
+    }
+    &.b2{
+        margin-top: 45%;
+    }
+    &:hover{
+        @extend %hover
+    }
+}

@@ -1,0 +1,59 @@
+a {
+  position: absolute;
+  text-decoration: none;
+  color: black;
+  margin: auto;
+  min-width: 50%;
+  margin-left: 25%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 5px;
+  -webkit-transition: .15s;
+  transition: .15s;
+}
+
+a:hover {
+  background: -webkit-gradient(linear, left top, right bottom, from(#4bcffa), to(#0fbcf9));
+  background: linear-gradient(to bottom right, #4bcefa88, #0fbaf97c);
+  font-size: 20px;
+  color: gray;
+  border: 2px dotted black;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#center {
+  position: relative;
+  border: 1px solid black;
+  -webkit-box-shadow: 0 0 5px 0 black;
+          box-shadow: 0 0 5px 0 black;
+  width: 500px;
+  height: 600px;
+  margin: auto;
+  margin-top: 5%;
+}
+
+@media (max-width: 575px) {
+  #center {
+    width: 400px;
+    height: 500px;
+  }
+}
+
+a {
+  z-index: 1;
+}
+
+a.b1 {
+  margin-top: 30%;
+}
+
+a.b2 {
+  margin-top: 45%;
+}
+/*# sourceMappingURL=main.css.map */

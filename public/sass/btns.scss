@@ -1,0 +1,21 @@
+%btns{
+    position: absolute;
+    text-decoration: none;
+    color: black;
+    margin: auto;
+    min-width: 50%;
+    margin-left: 25%;
+    @include paddingV(5px,5px);
+    border: 1px solid black;
+    text-align: center;
+    border-radius: 5px;
+    transition: .15s;
+}
+$cardGrad1: #4bcefa88;
+$cardGrad2: #0fbaf97c;
+%hover{    
+    background: linear-gradient(to bottom right,$cardGrad2,$cardGrad1);
+    font-size: 20px;
+    color: gray;
+    border: 2px dotted black;
+}

@@ -1,0 +1,13 @@
+header{		//Определяют хедер для следующего блока block{}
+	level: 1/2/.../9
+	theme: 'themeName'
+}#
+block{
+	question{
+		quest: ''
+		answ: ''
+		//OPTIONAL
+		level: NUM
+		theme: ''
+	}#
+}#
