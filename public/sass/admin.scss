@@ -1,9 +1,11 @@
 @import 'mixins.scss';
+@import 'btns.scss';
 @font-face{
     font-family: 'MyFont';
     src: url('../fonts/Merriweather-Regular.ttf');
 }
-
+$grayBG:#a4b0be;
+$grayA: #a4b0be70;
 *{
     margin: 0;
     padding: 0;    
@@ -13,13 +15,15 @@ a{
     text-decoration: none;
 }
 .settingsBox{
+    padding-left: 5vw;
     position: absolute;
     margin-top: 15vh;
     margin-left: 70vw;
-    @include SizeW(25vw);
+    @include SizeW(20vw);
     @include SizeH(70vh);
     border: 1px solid black;
     @include paddingV(20px,20px);
+    overflow: hidden;
 }
 .questBox{
     position: absolute;
@@ -50,16 +54,17 @@ a{
     }
 }
 .questPart{
-    background: #a4b0be70;
+    background: $grayA;
     position: relative;
     display: inline-block;
-    @include SizeW(80%);
+    @include SizeW(75%);
     border: 1px solid black;
     @include paddingV(10px,10px);
+    margin-left: 1%;
     border-radius: 10px;
     transition: .2s;
     &:hover{
-        background: #a4b0be;
+        background: $grayBG;
     }
 }
 .delete{
@@ -67,6 +72,7 @@ a{
     position: relative;    
     display: inline-block;
     border: 1px solid black;
+    margin-left: 1%;
     @include paddingV(10px,10px);
     @include SizeW(10%);
     
@@ -76,7 +82,35 @@ a{
         background: #ff4757;
     }
 }
+.questID{
+    position: relative;    
+    display: inline-block;
+    border: 1px solid black;
+    @include paddingV(10px,10px);
+    @include SizeW(10%);    
+    border-radius: 10px;
+    background: $grayBG;
+}
 input[type='radio']{
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
+    margin-bottom: 15px;
+}
+.btn{    
+    position: relative;
+    cursor: pointer;
+    border: 1px solid black;    
+    @extend %btns;
+    margin-left: 0%;
+    @include SizeW(75%);
+    margin-bottom: 15px;
+    &:hover{
+        @extend %hover;
+    }
+}
+#themes{    
+    @include SizeW(75%);
+    @include paddingV(5px,5px);
+    margin-bottom: 15px;
+    text-align: center;
 }

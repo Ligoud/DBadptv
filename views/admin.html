@@ -6,25 +6,24 @@
     <link rel="stylesheet" href="../public/css/admin.css">
 </head>
 <body>
-    <div class="questBox">
-        <div class="row">
-            <div class="questPart">
-                <a href="#">
-                    <span>Привет, бб</span>
-                </a>
-            </div>
-            <div class="delete">
-                <a href="#">
-                    <span>X</span>
-                </a>
-            </div>
-            <br>
-        </div>    
+    <div id='tss'>press</div>    
+    <div class="questBox">  
     </div>
     <div class="settingsBox">
-        <input type="radio" name="t" id="" value="1">
-        <input type="radio" name="t" id="" value="2">
-        <input type="radio" name="t" id="" value="3">
+        <select name="" id="themes">
+            <option disabled selected value="">Темы не выбраны </option>
+        </select>
+        <br>
+        <input type="radio" name="type" id="radio1" value="open"> 
+        <label for="radio1">Открытый вопрос</label><br>
+        <input type="radio" name="type" id="radio2" value="cases">
+        <label for="radio2">Вопрос с вариантом ответа</label><br>
+        <input checked type="radio" name="type" id="radio3" value="all">                
+        <label for="radio3">Все вопросы</label><br>
+
+        <div class="btn btn-1">Выбрать темы</div>
+        <div class="btn btn-2">Проверить файлы</div>
     </div>
+    <script src="../public/js/admin.js"></script>
 </body>
 </html>
