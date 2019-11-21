@@ -9,6 +9,9 @@ var statement={
     block: ''
 }
 var question={
+    theme:'',
+    level:0,
+    cases:'-',
     quest:'',
     answ:''
 }
@@ -31,9 +34,12 @@ class Parser{
                 //console.log(endQuest+' '+endBlock)
                 if(!endQuest){
                     endQuest=true
-                    //console.log(question)                    
+                    //console.log(question) 
+                    question.level=header.level
+                    question.theme=header.theme                   
                     globalRes.push(question)
                     question={} //УДАЛИТЬ ССЫЛКУ НА СТАРТОВЫЙ ОБЪЕКТ
+                    question.cases='-'
                 }
                 else if(!endBlock){
                     //console.log('block '+statement.block+' ends')
@@ -103,16 +109,14 @@ class Parser{
             }
         })
         readline.on('close',()=>{
-            //console.log(result)   
-            console.log('before')             
             resolve('done')
         })        
         })  //promise заканчивается
         
         await promise
-        console.log('after')
     }
-    async checkFiles(){
+    async checkFiles(){ //Форсит на чтение всех файлов
+        globalRes=[]
         let prom=new Promise((resolve,reject)=>{
         
         var readline=require('readline').createInterface({
@@ -126,7 +130,6 @@ class Parser{
         readline.on('close',async ()=>{
             console.log(filesToRead)
             for(let i=0;i<filesToRead.length;i++){
-                //console.log('newIter')
                 let rline=require('readline').createInterface({
                     input: require('fs').createReadStream(path.join(__dirname,'questions',filesToRead[i]))
                 })                
@@ -136,7 +139,6 @@ class Parser{
         })              //end of 'close' event
         })//promise ends    
         await prom
-        //console.log(globalRes)
         return globalRes;
     }    
 }

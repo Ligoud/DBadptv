@@ -21,17 +21,20 @@ class myPg{
             if(err)
                 console.error(err)
         })
-        client.query("create table if not exists questions (questID serial PRIMARY KEY,question text NOT NULL, cases text default '-',answer text NOT NULL, delted bool default false);",(err,res)=>{
+        client.query("create table if not exists questions (questID serial PRIMARY KEY,theme text default 'neutral',level integer NOT NULL,question text NOT NULL UNIQUE, cases text default '-',answer text NOT NULL, delted bool default false);",(err,res)=>{
             if(err)
                 console.error(err)
         })
         //тут же триггеры и пользовательские функции создать
     }
-    async get(condition,res){   //REWOOOOOORK !!!!!!!
-        return await client.query({                
-            text: "SELECT $r FROM questions WHERE $c",
-            values: [res,condition]
-        })                
+    async getQuestionThemes(){     //Получаю темы из таблицы
+        const {rows}=await client.query({                   //AWAIT не работает. придумать с промизом
+            text: "SELECT DISTINCT theme FROM questions ",
+        },(err,res)=>{
+            if(err)
+                console.log(err)
+        })           
+        return rows     
     }
     async add(tabName,fields,vals){
         console.log(typeof fields)
@@ -40,10 +43,10 @@ class myPg{
                 console.log(err)
         })
     }
-    async addQuestion(quest,cases,answer){
+    async addQuestion(theme,level,quest,cases,answer){  //Добавляю вопросы в таблицу
         client.query({
-            text:'INSERT INTO questions (question,cases,answer) values ($1::text,$2::text,$3::text)',
-            values: [quest,cases,answer]
+            text:'INSERT INTO questions (theme,level,question,cases,answer) values ($1::text,$2,$3::text,$4::text,$5::text)',
+            values: [theme,level,quest,cases,answer]
         },(err,res)=>{
             if(err)
                 console.log(err)

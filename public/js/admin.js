@@ -26,10 +26,18 @@ document.getElementsByClassName('btn-1')[0].addEventListener('click',()=>{
             }
         }
     }
-    x.send()
+    alert(type)
+    x.send(type)
 })
 function updateOptions(arrOpt){
     var select=document.getElementById('themes')
+    select.innerHTML=''
+    var startOpt=document.createElement('option')
+    startOpt.innerText='Темы не выбраны'
+    startOpt.setAttribute('disabled','')
+    startOpt.setAttribute('selected','')
+    startOpt.setAttribute('value','')
+    select.insertAdjacentElement('beforeend',startOpt)
     arrOpt.forEach(el => {
         let option=document.createElement('option')
         option.innerText=el
@@ -75,11 +83,29 @@ function addLine(){
     divR.insertAdjacentElement('beforeend',divDel)
     document.getElementsByClassName('questBox')[0].insertAdjacentElement('beforeend',divR)
 }
+function selectChange(ev){
+    var xhr=new XMLHttpRequest()    
+    xhr.open(
+        'GET',
+        window.location.href+'/themes/'+ev.target.options[ev.target.selectedIndex].value
+    )
+    xhr.onload=function(e){
+        if(xhr.readyState==4) //done
+        {
+            if(xhr.status==200){   //ok
+                alert(xhr.response)
+            }else{
+                console.log(xhr.statusText)
+            }
+        }
+    }
+    xhr.send()
+}
+
 document.getElementById('tss').addEventListener('click',()=>{
     addLine()
 })
-document.getElementById('themes').addEventListener('change',()=>{
-})
+document.getElementById('themes').addEventListener('change',selectChange)
 document.addEventListener('click',function(e){  //Удаление строки
     if(e.target && e.target.hasAttribute('data-delete')){    
         var el=e.target
