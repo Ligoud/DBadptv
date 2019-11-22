@@ -1,6 +1,8 @@
 //Текст парсер с целью разбора вопросов
 const path=require('path')
 
+var currentType=''
+
 var header={
     level: 0,
     theme: ''
@@ -36,7 +38,8 @@ class Parser{
                     endQuest=true
                     //console.log(question) 
                     question.level=header.level
-                    question.theme=header.theme                   
+                    question.theme=header.theme    
+                    question.type=currentType               
                     globalRes.push(question)
                     question={} //УДАЛИТЬ ССЫЛКУ НА СТАРТОВЫЙ ОБЪЕКТ
                     question.cases='-'
@@ -130,6 +133,7 @@ class Parser{
         readline.on('close',async ()=>{
             console.log(filesToRead)
             for(let i=0;i<filesToRead.length;i++){
+                currentType=filesToRead[i].split('.')[0]
                 let rline=require('readline').createInterface({
                     input: require('fs').createReadStream(path.join(__dirname,'questions',filesToRead[i]))
                 })                

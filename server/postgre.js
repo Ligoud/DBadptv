@@ -1,6 +1,6 @@
-var {Client}=require('pg')
+var {Pool}=require('pg')
 var uri='postgres://postgres:4049@localhost:5432/dbtest'
-var client=new Client({
+var client=new Pool({
     connectionString: uri
 })
 
@@ -21,35 +21,46 @@ class myPg{
             if(err)
                 console.error(err)
         })
-        client.query("create table if not exists questions (questID serial PRIMARY KEY,theme text default 'neutral',level integer NOT NULL,question text NOT NULL UNIQUE, cases text default '-',answer text NOT NULL, delted bool default false);",(err,res)=>{
+        client.query("create table if not exists questions (questID serial PRIMARY KEY,theme text default 'neutral',level integer NOT NULL,type text NOT NULL,question text NOT NULL UNIQUE, cases text default '-',answer text NOT NULL, delted bool default false);",(err,res)=>{
             if(err)
                 console.error(err)
         })
         //тут же триггеры и пользовательские функции создать
     }
-    async getQuestionThemes(){     //Получаю темы из таблицы
-        const {rows}=await client.query({                   //AWAIT не работает. придумать с промизом
-            text: "SELECT DISTINCT theme FROM questions ",
-        },(err,res)=>{
-            if(err)
-                console.log(err)
-        })           
-        return rows     
+    async deleteQuestion(id){
+        client.query({text:'UPDATE questions SET delted=true WHERE questID=$1',values:[id]})
     }
-    async add(tabName,fields,vals){
-        console.log(typeof fields)
-        client.query('INSERT INTO '+tabName+' ('+fields+') values ('+vals+');',(err,res)=>{
-            if(err)
-                console.log(err)
-        })
+    async getQuestionThemes(type='all'){     //Получаю темы из таблицы
+        var res
+        if(type!=='all')
+            res=await client.query({text:"SELECT DISTINCT theme FROM questions WHERE type=$1",values:[type]})        
+        else{
+            res=await client.query({text:"SELECT DISTINCT theme FROM questions"})        
+        }
+        var {rows}=res
+        return rows
     }
-    async addQuestion(theme,level,quest,cases,answer){  //Добавляю вопросы в таблицу
+    async getThemeQuestions(theme,type){
+        var res
+        if(type==='all')
+            res=await client.query({text:"SELECT * FROM questions WHERE $1::text=theme AND delted=false", values:[theme]})
+        else
+            res=await client.query({text:"SELECT * FROM questions WHERE $1::text=theme AND type=$2::text AND delted=false", values:[theme,type]})        
+        var {rows}=res
+        return rows
+    }
+    async addQuestion(type,theme,level,quest,cases,answer){  //Добавляю вопросы в таблицу
         client.query({
-            text:'INSERT INTO questions (theme,level,question,cases,answer) values ($1::text,$2,$3::text,$4::text,$5::text)',
-            values: [theme,level,quest,cases,answer]
+            text:'INSERT INTO questions (type,theme,level,question,cases,answer) values ($1::text,$2::text,$3,$4::text,$5::text,$6::text)',
+            values: [type,theme,level,quest,cases,answer]
         },(err,res)=>{
             if(err)
-                console.log(err)
+            {
+                if(err.constraint!=='questions_question_key'){
+                    console.log(err)
+                }
+            }
+                
         })
     }
     async customGet(request){

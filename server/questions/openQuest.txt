@@ -1,0 +1,14 @@
+header{
+	level: 1
+	theme: theme1
+}#
+block{
+	question{
+		quest: questionForTheme1
+		answ: answerForQuestion
+	}#
+    question{
+        quest: myQuest
+        answ: myansw
+    }#
+}#

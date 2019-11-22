@@ -1,33 +1,47 @@
+var chosenType='all'
+var chosenTheme=''
+function updateHeader(){
+    var forHeaderText='Список вопросов по теме "'+chosenTheme+'"'
+        if(chosenType==='all')
+            forHeaderText+=' для всех типов вопросов'
+        else if(chosenType==='openQuest')
+           forHeaderText+=' для открытых вопросов'
+        else
+            forHeaderText+=' для вопросов с вариантами ответа'
+    document.getElementById('header').innerText=forHeaderText
+}
+
 document.getElementsByClassName('btn-1')[0].addEventListener('click',()=>{
-    var radios=document.querySelectorAll('input[name="type"]')
-    var type=''
+    var radios=document.querySelectorAll('input[name="type"]')    
     for(let i=0;i<radios.length;i++)
     {
         if(radios[i].checked){
-            type=radios[i].value
+            chosenType=radios[i].value
         }
     }
+    //Обновляю заголовк страницы
+    //
     var x=new XMLHttpRequest()
-    var url=window.location.href
-    url+='/themes'
+    var url=window.location.href+'/themes/'+chosenType
     x.open(
         'GET',
         url
     )
+    alert(url)
     x.onload=function(e){
         if(x.readyState==4) //done
         {
             if(x.status==200)   //ok
             {                
                 var arr=JSON.parse(x.response).arr
+                //console.log(x.response)
                 updateOptions(arr)
             }else{  //not ok
                 alert(x.statusText)
             }
         }
     }
-    alert(type)
-    x.send(type)
+    x.send()
 })
 function updateOptions(arrOpt){
     var select=document.getElementById('themes')
@@ -44,7 +58,7 @@ function updateOptions(arrOpt){
         select.insertAdjacentElement('beforeend',option)
     });
 }
-function addLine(){
+function addLine(id='NUM',question='question'){
     var divR=document.createElement('div'),
         divTxt=document.createElement('div'),
         divDel=document.createElement('div'),
@@ -55,9 +69,9 @@ function addLine(){
         span=document.createElement('span'),
         span1=document.createElement('span'),
         span2=document.createElement('span')
-    a.setAttribute('href','#')
+    a.setAttribute('href','')
     //NUM
-    span2.innerText='#NUM'
+    span2.innerText=id
     a2.insertAdjacentElement('beforeend',span2)
     divNum.insertAdjacentElement('beforeend',a2)
     divNum.classList.add('questID')
@@ -70,9 +84,11 @@ function addLine(){
     divDel.insertAdjacentElement('beforeend',a) //div X сделан
     divDel.classList.add('delete')
     divDel.setAttribute('data-delete','')
+    divDel.setAttribute('data-idRow',id)
+
     //
     //text
-    span1.innerText='Вопрос'
+    span1.innerText=question
     a1.insertAdjacentElement('beforeend',span1)
     divTxt.insertAdjacentElement('beforeend',a1)
     divTxt.classList.add('questPart')
@@ -85,15 +101,22 @@ function addLine(){
 }
 function selectChange(ev){
     var xhr=new XMLHttpRequest()    
+    chosenTheme=ev.target.options[ev.target.selectedIndex].value
+    
     xhr.open(
         'GET',
-        window.location.href+'/themes/'+ev.target.options[ev.target.selectedIndex].value
+        window.location.href+'/themes/'+chosenType+'/'+chosenTheme
     )
     xhr.onload=function(e){
         if(xhr.readyState==4) //done
         {
             if(xhr.status==200){   //ok
-                alert(xhr.response)
+                let result=JSON.parse(xhr.response)
+                document.getElementsByClassName('questBox')[0].innerHTML=''
+                updateHeader()
+                result.forEach(el=>{
+                    addLine(el.questid,el.question)
+                })
             }else{
                 console.log(xhr.statusText)
             }
@@ -101,17 +124,20 @@ function selectChange(ev){
     }
     xhr.send()
 }
-
-document.getElementById('tss').addEventListener('click',()=>{
-    addLine()
-})
-document.getElementById('themes').addEventListener('change',selectChange)
+document.getElementById('themes').addEventListener('change',selectChange)   //Выбор темы в селекторе
 document.addEventListener('click',function(e){  //Удаление строки
     if(e.target && e.target.hasAttribute('data-delete')){    
         var el=e.target
         while(!el.parentElement.classList.contains('row')){
             el=el.parentElement
         }
+        
+        xhr=new XMLHttpRequest()
+        xhr.open(
+            'DELETE',
+            window.location.href+'/'+el.getAttribute('data-idRow')
+        )
+        xhr.send()
         el.parentElement.parentElement.removeChild(el.parentElement)
     }
 })
@@ -123,6 +149,7 @@ document.getElementsByClassName('btn-2')[0].addEventListener('click',()=>{
         'GET',
         url
     )
+    alert(url)
     x.onload=function(e){
         if(x.readyState==4) //done
         {

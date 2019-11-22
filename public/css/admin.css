@@ -171,7 +171,18 @@ input[type='radio'] {
   margin-bottom: 15px;
   text-align: center;
 }
-option:disabled{
+
+.questBoxHeader {
+  font-family: 'MyFont';
+  font-weight: normal;
+  font-style: normal;
+  position: absolute;
+  text-align: center;
+  margin-left: 2vw;
+  margin-top: 10vh;
+}
+
+option:disabled {
   display: none;
 }
 /*# sourceMappingURL=admin.css.map */
