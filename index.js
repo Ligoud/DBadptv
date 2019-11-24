@@ -6,10 +6,13 @@ var parser=new Parser()
 //Создаем сервер
 const path=require('path')
 const express=require('express')
-//const bodyParser=require('body-parser')
+const bodyParser=require('body-parser')
+const formidale=require('express-formidable')
 var app=express()
-//app.use(bodyParser.urlencoded({extended: false})) //Если парсить надо будет json
-//app.use(bodyParser.json())
+//app.use(bodyParser.urlencoded({extended: true}))
+//app.use(bodyParser.json()) //Если парсить надо будет json
+app.use(formidale())
+//
 app.use('/public',express.static(path.join(__dirname,'public')))
 app.engine('.html', require('ejs').__express);
 app.set('views', __dirname + '/views');
@@ -20,9 +23,33 @@ app.set('view engine', 'html');
 app.get('/',(req,res)=>{    
     res.render('index')
 })
+//Авторизация
+app.get('/auth',(req,res)=>{
+    res.render('auth')
+})
+app.post('/auth/login',async (req,res)=>{
+    var obj={
+        logedIn: false,
+        login:'',
+        role: ''
+    }
+    var result=await pg.checkLogin(req.fields.login,req.fields.password)    
+    if(result.length>0){
+        obj.logedIn=true
+        obj.login=result[0].login
+        obj.role=result[0].role
+    }    
+    res.send(JSON.stringify(obj))
+})
+app.post('/auth/register',async (req,res)=>{    
+    var result=await pg.addUser(req.fields.login,req.fields.password)    
+    res.send(JSON.stringify({registered:result}))
+})
+//Тестирование
 app.get('/test',(req,res)=>{
     res.render('test')
 })
+//Редактирование вопросов
 app.get('/admin',(req,res)=>{
     res.render('admin')
 })
@@ -51,6 +78,7 @@ app.get('/admin/checkfiles',async (req,res)=>{
     }
     res.send('true')
 })
+//
 app.listen(8080,()=>{
     console.log('Сервер работает')
 })

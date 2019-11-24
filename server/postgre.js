@@ -13,15 +13,19 @@ client.connect((err)=>{
 
 class myPg{
     constructor(){
-        client.query("create table if not exists users (name varchar(50) default 'user', UserID serial PRIMARY KEY, password text default '123');",(err,res)=>{
+        /*client.query("create table if not exists users (name varchar(50) default 'user', UserID serial PRIMARY KEY, password text default '123');",(err,res)=>{
             if(err)
                 console.error(err)
         })
-        client.query("create table if not exists userInfo (UserID integer PRIMARY KEY references users(UserId),role text default 'student', mygroup varchar(10) default '-');",(err,res)=>{
+        client.query("create table if not exists userInfo (UserID integer PRIMARY KEY references users(login),role text default 'student', mygroup varchar(10) default '-');",(err,res)=>{
             if(err)
                 console.error(err)
-        })
+        })*/
         client.query("create table if not exists questions (questID serial PRIMARY KEY,theme text default 'neutral',level integer NOT NULL,type text NOT NULL,question text NOT NULL UNIQUE, cases text default '-',answer text NOT NULL, delted bool default false);",(err,res)=>{
+            if(err)
+                console.error(err)
+        })
+        client.query("create table if not exists users (login text PRIMARY KEY,password text NOT NULL,name text default '-', user_group text default '-',role text default 'user')",(err,res)=>{
             if(err)
                 console.error(err)
         })
@@ -29,6 +33,23 @@ class myPg{
     }
     async deleteQuestion(id){
         client.query({text:'UPDATE questions SET delted=true WHERE questID=$1',values:[id]})
+    }
+    async addUser(login,password){
+        var registered=true
+        try{
+        await client.query({text:'INSERT INTO users (login,password) values ($1::text,$2::text)', 
+                            values:[login,password]})
+        }catch(err){
+            registered=false
+        }
+        return registered
+    }
+    async checkLogin(login,password){
+        var {rows}=await client.query({
+            text:'SELECT role,login FROM users WHERE $1::text=login AND $2::text=password',
+            values:[login,password]
+        })
+        return rows
     }
     async getQuestionThemes(type='all'){     //Получаю темы из таблицы
         var res

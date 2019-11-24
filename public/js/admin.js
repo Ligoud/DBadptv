@@ -27,7 +27,7 @@ document.getElementsByClassName('btn-1')[0].addEventListener('click',()=>{
         'GET',
         url
     )
-    alert(url)
+    //alert(url)
     x.onload=function(e){
         if(x.readyState==4) //done
         {

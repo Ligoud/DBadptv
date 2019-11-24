@@ -21,7 +21,7 @@ $pageBg: #63cdda;
     margin: auto;
     margin-top: 5%;
 }
-a{
+.btn{
     z-index: 1;
     @extend %btns;
     &.b1{
@@ -30,7 +30,23 @@ a{
     &.b2{
         margin-top: 45%;
     }
-    &:hover{
+    &.b3{
+        margin-top: 60%;
+    }
+    &:hover:not(.disabled){
         @extend %hover
     }
+    &.disabled{
+        background-color: #b2bec3a9;
+    }
+}
+.header{
+    position: absolute;
+    font-size: 25px;
+    text-align: center;
+    margin-left: 35%;
+    @include SizeW(30%);
+}
+#loginName{
+    font-size: 20px;
 }

@@ -2,15 +2,22 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>Page Title</title>  
+    <title>Main Menu</title>  
     <link rel="stylesheet" href="../public/css/main.css">
 </head>
 <body>
+    <div class="header">
+        <span>Главное меню</span><br>
+        <span id='loginName'></span>
+    </div>
     <div id='center'>
-        <a href="/test" class="btn b1">
+        <a href="/test" class="btn b1 disabled">
             <span class="customFont">Начать тестирование</span>                        
         </a>
-        <a href="/admin" class="btn b2">
+        <a href="/admin" class="btn b2 disabled">
+            <span class="customFont" title="Студент/администратор">Редактирование вопросов</span>
+        </a>
+        <a href="/auth" class="btn b3">
             <span class="customFont" title="Студент/администратор">Авторизоваться</span>
         </a>
     </div>

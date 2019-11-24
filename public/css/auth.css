@@ -1,0 +1,62 @@
+input {
+  position: absolute;
+  text-decoration: none;
+  color: black;
+  margin: auto;
+  min-width: 50%;
+  margin-left: 25%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 1px solid black;
+  text-align: center;
+  border-radius: 5px;
+  -webkit-transition: .15s;
+  transition: .15s;
+}
+
+@font-face {
+  font-family: 'MyFont';
+  src: url("../fonts/Merriweather-Regular.ttf");
+}
+
+input {
+  font-family: 'MyFont';
+}
+
+input[type='text'] {
+  margin-top: 30%;
+}
+
+input[type='password'] {
+  margin-top: 50%;
+}
+
+button {
+  cursor: pointer;
+  font-family: 'MyFont';
+  position: absolute;
+  background: rgba(0, 0, 0, 0);
+  border: 1px solid black;
+  margin-top: 90%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  -webkit-transition: .15s;
+  transition: .15s;
+}
+
+button:hover {
+  background: #0fbaf97c;
+}
+
+.loginBtn {
+  min-width: 30%;
+  max-width: 30%;
+  margin-left: 60%;
+}
+
+.registerBtn {
+  min-width: 40%;
+  max-width: 40%;
+  margin-left: 10%;
+}
+/*# sourceMappingURL=auth.css.map */

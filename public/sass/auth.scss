@@ -1,0 +1,43 @@
+@import 'mixins.scss';
+@import 'btns.scss';
+@font-face{
+    font-family: 'MyFont';
+    src: url('../fonts/Merriweather-Regular.ttf');
+}
+$btn: #0fbaf97c;
+
+*{
+}
+input{
+    font-family: 'MyFont';
+    @extend %btns;
+    &[type='text']{
+        margin-top: 30%;
+    }
+    &[type='password']{
+        margin-top: 50%;
+    }
+}
+button{
+    cursor: pointer;
+    font-family: 'MyFont';
+    position: absolute;
+    background: rgba($color: #000000, $alpha: 0);
+    border: 1px solid black;
+    margin-top: 90%;
+    @include paddingV(5px,5px);
+    transition: .15s;
+    &:hover{
+        background: $btn;
+    }
+}
+.loginBtn{
+    @include SizeW(30%);    
+    margin-left: 60%;    
+}
+.registerBtn{
+    @include SizeW(40%);
+    margin-left:10%;
+}
+
+
