@@ -1,0 +1,79 @@
+@import 'mixins.scss';
+
+*{
+    margin: 0;
+    padding: 0;
+}
+#map{
+    position: relative;
+    margin-top: 6vh;
+    margin-left: 10vw;
+    @include SizeW(80vw);
+    @include SizeH(4vh);
+    border: 1px solid black;     
+    border-bottom: none;   
+    & li{
+        display: inline-block;
+        list-style-type: none;
+        @include paddingH(15px,15px);
+        @include paddingV(10px,10px);        
+        border-right: 1px solid black;
+        background: #7f8fa633;
+        &:hover{
+            background: #7f8fa6d8;
+        }
+        &[right]{
+            background:#4cd1376b;
+            &:hover{
+                background:#45bd32d8;
+            }
+        }
+        &[failed]{
+            background:#e8421833;
+            &:hover{
+                background:#e84218d8;
+            }
+        }
+    }
+    & ul{
+        cursor: pointer;
+        z-index: 1;
+    }
+    overflow: hidden;
+    overflow-x: scroll;    
+    @extend %HideScroll;
+}
+#card{
+    position: relative;
+    margin-left: 10vw;
+    border: 1px solid black;
+    @include SizeW(80vw);
+    @include SizeH(80vh);
+}
+#bottom{    
+    position: relative;    
+    margin-top: 75vh;
+    padding-left: 1%;
+    & div{
+        cursor: pointer;
+        @include SizeW(24%);
+        @include paddingV(8px,8px);
+        border: 1px solid black;
+        display: inline-block;
+        text-align: center;
+        &.Accept{
+            margin-left: 48%;
+            border-radius: 0 10px 10px 0;
+            &:hover{                
+                background: #A3CB38;
+            }
+        }
+        &.Skip{
+            border-radius: 10px 0 0 10px;
+            &:hover{
+                background: #ED4C67;
+            }
+        }
+    };
+        
+}

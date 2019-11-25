@@ -1,0 +1,109 @@
+#map {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#map::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: relative;
+  margin-top: 6vh;
+  margin-left: 10vw;
+  min-width: 80vw;
+  max-width: 80vw;
+  min-height: 4vh;
+  max-height: 4vh;
+  border: 1px solid black;
+  border-bottom: none;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+#map li {
+  display: inline-block;
+  list-style-type: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-right: 1px solid black;
+  background: #7f8fa633;
+}
+
+#map li:hover {
+  background: #7f8fa6d8;
+}
+
+#map li[right] {
+  background: #4cd1376b;
+}
+
+#map li[right]:hover {
+  background: #45bd32d8;
+}
+
+#map li[failed] {
+  background: #e8421833;
+}
+
+#map li[failed]:hover {
+  background: #e84218d8;
+}
+
+#map ul {
+  cursor: pointer;
+  z-index: 1;
+}
+
+#card {
+  position: relative;
+  margin-left: 10vw;
+  border: 1px solid black;
+  min-width: 80vw;
+  max-width: 80vw;
+  min-height: 80vh;
+  max-height: 80vh;
+}
+
+#bottom {
+  position: relative;
+  margin-top: 75vh;
+  padding-left: 1%;
+}
+
+#bottom div {
+  cursor: pointer;
+  min-width: 24%;
+  max-width: 24%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: 1px solid black;
+  display: inline-block;
+  text-align: center;
+}
+
+#bottom div.Accept {
+  margin-left: 48%;
+  border-radius: 0 10px 10px 0;
+}
+
+#bottom div.Accept:hover {
+  background: #A3CB38;
+}
+
+#bottom div.Skip {
+  border-radius: 10px 0 0 10px;
+}
+
+#bottom div.Skip:hover {
+  background: #ED4C67;
+}
+/*# sourceMappingURL=test.css.map */

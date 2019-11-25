@@ -3,8 +3,8 @@
     padding-bottom: $bottom;
 }
 @mixin paddingH($left, $right) {
-    padding-top: $left;
-    padding-bottom: $right;
+    padding-left: $left;
+    padding-right: $right;
 }
 @mixin SizeW ($val) {
     min-width: $val;
@@ -14,12 +14,12 @@
     min-height: $val;
     max-height: $val;
 }
-
 //nest 
 %HideScroll{
     -ms-overflow-style: none;
     scrollbar-width: none;
     &::-webkit-scrollbar{
         width: 0px;
+        height: 0px;
     }
 }
