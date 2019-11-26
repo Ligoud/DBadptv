@@ -5,6 +5,7 @@
 
 .questBox::-webkit-scrollbar {
   width: 0px;
+  height: 0px;
 }
 
 .btn {
@@ -68,8 +69,8 @@ a {
   max-width: 60vw;
   min-height: 70vh;
   max-height: 70vh;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   margin-left: 5vw;
   border-top: 1px solid black;
   border-bottom: 1px solid black;

@@ -1,9 +1,9 @@
-#map {
+#map, #question, #answer {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-#map::-webkit-scrollbar {
+#map::-webkit-scrollbar, #question::-webkit-scrollbar, #answer::-webkit-scrollbar {
   width: 0px;
   height: 0px;
 }
@@ -105,5 +105,64 @@
 
 #bottom div.Skip:hover {
   background: #ED4C67;
+}
+
+#start {
+  cursor: pointer;
+  position: absolute;
+  min-width: 16%;
+  max-width: 16%;
+  min-height: 10%;
+  max-height: 10%;
+  margin-left: 42%;
+  margin-top: 30vh;
+  border: 1px solid black;
+  border-radius: 5px 5px 5px 5px;
+  background: rgba(164, 203, 56, 0.562);
+  text-align: center;
+  font-size: 25px;
+  overflow: hidden;
+}
+
+#start span {
+  margin-top: 20%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#start:hover {
+  background: #A3CB38;
+  -webkit-box-shadow: 5px 5px 20px 2px black;
+          box-shadow: 5px 5px 20px 2px black;
+}
+
+[data-disabled] {
+  display: none;
+}
+
+#question, #answer {
+  position: absolute;
+  padding-left: 100px;
+  padding-right: 100px;
+  min-width: 80%;
+  max-width: 80%;
+  min-height: 50%;
+  max-height: 50%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 5%;
+  border: 2px solid black;
+  border-radius: 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+#answer {
+  position: absolute;
+  margin-top: 37%;
+  border: 1px dotted black;
+  min-height: 20%;
+  max-height: 20%;
 }
 /*# sourceMappingURL=test.css.map */
