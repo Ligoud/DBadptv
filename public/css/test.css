@@ -75,7 +75,7 @@
 
 #bottom {
   position: relative;
-  margin-top: 75vh;
+  margin-top: 10vh;
   padding-left: 1%;
 }
 
@@ -91,7 +91,7 @@
 }
 
 #bottom div.Accept {
-  margin-left: 48%;
+  margin-left: 50%;
   border-radius: 0 10px 10px 0;
 }
 
@@ -141,16 +141,16 @@
 }
 
 #question, #answer {
-  position: absolute;
+  position: relative;
   padding-left: 100px;
   padding-right: 100px;
   min-width: 80%;
   max-width: 80%;
-  min-height: 50%;
-  max-height: 50%;
+  min-height: 40vh;
+  max-height: 40vh;
   margin-left: 10%;
   margin-right: 10%;
-  margin-top: 5%;
+  margin-top: 2%;
   border: 2px solid black;
   border-radius: 10px;
   -webkit-box-sizing: border-box;
@@ -158,11 +158,27 @@
   overflow-y: scroll;
 }
 
+@media (max-width: 576px) {
+  #question, #answer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 #answer {
-  position: absolute;
-  margin-top: 37%;
+  position: relative;
+  margin-top: 3%;
   border: 1px dotted black;
-  min-height: 20%;
-  max-height: 20%;
+  min-height: 15vh;
+  max-height: 15vh;
+}
+
+input[type='checkbox'] {
+  width: 30px;
+  height: 30px;
+}
+
+input[type='checkbox'].col2 {
+  margin-left: 20%;
 }
 /*# sourceMappingURL=test.css.map */

@@ -30,10 +30,17 @@ class myPg{
                 console.error(err)
         })
         //тут же триггеры и пользовательские функции создать
+    }    
+    //Модуль тестирования
+    async getIds(){
+        var {rows}=await client.query({text:'SELECT questID from questions WHERE delted=false'})
+        return rows
     }
-    async deleteQuestion(id){
-        client.query({text:'UPDATE questions SET delted=true WHERE questID=$1',values:[id]})
+    async getQuest(id){
+        var {rows}=await client.query({text:'SELECT questID, question, cases FROM questions WHERE $1=questID ',values:[id]})
+        return rows
     }
+    //Модуль авторизации
     async addUser(login,password){
         var registered=true
         try{
@@ -50,6 +57,10 @@ class myPg{
             values:[login,password]
         })
         return rows
+    }
+    //Модуль редактирования
+    async deleteQuestion(id){
+        client.query({text:'UPDATE questions SET delted=true WHERE questID=$1',values:[id]})
     }
     async getQuestionThemes(type='all'){     //Получаю темы из таблицы
         var res

@@ -52,7 +52,7 @@
 }
 #bottom{    
     position: relative;    
-    margin-top: 75vh;
+    margin-top: 10vh;
     padding-left: 1%;
     & div{
         cursor: pointer;
@@ -62,7 +62,7 @@
         display: inline-block;
         text-align: center;
         &.Accept{
-            margin-left: 48%;
+            margin-left: 50%;
             border-radius: 0 10px 10px 0;
             &:hover{                
                 background: #A3CB38;
@@ -104,22 +104,34 @@
     display: none;
 }
 #question,#answer{
-    position: absolute;
+    position: relative;
     @include paddingH(100px,100px);
     @include SizeW(80%);
-    @include SizeH(50%);
+    @include SizeH(40vh);
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 5%;
+    margin-top: 2%;
     border: 2px solid black;
     border-radius: 10px;
     box-sizing: border-box;
     overflow-y: scroll;
-    @extend %HideScroll;
+    @extend %HideScroll;    
+    @media (max-width: 576px)
+    {
+        @include paddingH(0,0);
+    }
 }
 #answer{
-    position: absolute;
-    margin-top: 37%;
+    position: relative;    
+    margin-top: 3%;
     border: 1px dotted black;
-    @include SizeH(20%);
+    @include SizeH(15vh);
+}
+
+input[type='checkbox']{
+    width: 30px;
+    height: 30px;
+    &.col2{
+        margin-left: 20%;
+    }
 }
