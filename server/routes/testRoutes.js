@@ -15,6 +15,6 @@ router.get('/startTest/:login',async (req,res)=>{
     //res.send(JSON.stringify({arrID:ids}))
 })
 router.post('/answer',async(req,res)=>{
-    
+    await test.checkAnswer(JSON.parse(req.fields.answer))
 })
 module.exports=router

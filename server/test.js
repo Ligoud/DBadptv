@@ -5,10 +5,15 @@ class Test{
     constructor(){
         this.users={}
     }
+    async getQuestion(){
+
+    }
     async getStarded(login){    //Проверяем с чего начать тестирование и возвращаем вопрос первый
         this.users[login]={}
         this.users[login].currentlvl=1
         this.users[login].testequestions=[]
+        this.users[login].rights=0
+        this.users[login].wrongs=0
         var res=await pg.getUserAverageLevel(login)
         if(res[0].al!==null)
             this.users[login].currentlvl=res[0].al
@@ -16,7 +21,7 @@ class Test{
         this.users[login].testequestions.push(quest[0].questid)
         return quest[0] //Возвращаю объект вопроса
     }
-    async nextQuest(login){
+    async checkAnswer(answerObj){
         
     }
 }

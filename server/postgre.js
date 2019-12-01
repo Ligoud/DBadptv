@@ -48,6 +48,13 @@ class myPg {
         var {rows}= await client.query({text:'SELECT questID,question,cases,type FROM questions WHERE level=$1'+tst+'AND delted=false ORDER BY random() LIMIT 1',values:[al]})
         return rows
     }
+    async checkQuestion(questID,answer){
+        var {rows}=await client.query({text:'SELECT answer FROM questions WHERE questID=$1::text',values:[questID]})
+        var res={isRight:false,rightAnswer:rows[0].answer}
+        if(res.rightAnswer===answer)
+            res.isRight=true
+        return res
+    }
     //устаревшая
     async getIds() {
         var { rows } = await client.query({ text: 'SELECT questID from questions WHERE delted=false' })
