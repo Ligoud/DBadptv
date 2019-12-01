@@ -4,6 +4,9 @@ var router=express.Router()
 const {myPg}=require('../postgre')
 var pg=new myPg()  
 
+const {Parser}=require('../parser')
+var parser=new Parser()
+
 //Редактирование вопросов
 router.get('/',(req,res)=>{
     res.render('admin')

@@ -1,5 +1,5 @@
 header{
-	level: 1
+	level: 4
 	theme: theme1
 }#
 block{

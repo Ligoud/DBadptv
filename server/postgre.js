@@ -1,105 +1,126 @@
-var {Pool}=require('pg')
-var uri='postgres://postgres:4049@localhost:5432/dbtest'
-var client=new Pool({
+var { Pool } = require('pg')
+var uri = 'postgres://postgres:4049@localhost:5432/dbtest'
+var client = new Pool({
     connectionString: uri
 })
 
-client.connect((err)=>{
-    if(err)
+client.connect((err) => {
+    if (err)
         console.error(err)
     else
         console.log('Соединение установлено')
 })
 
-class myPg{
-    constructor(){
-        /*client.query("create table if not exists users (name varchar(50) default 'user', UserID serial PRIMARY KEY, password text default '123');",(err,res)=>{
-            if(err)
+class myPg {
+    constructor() {
+        client.query("create table if not exists questions (questID serial PRIMARY KEY,theme text default 'neutral',level integer NOT NULL,type text NOT NULL,question text NOT NULL UNIQUE, cases text default '-',answer text NOT NULL, delted bool default false);", (err, res) => {
+            if (err)
                 console.error(err)
         })
-        client.query("create table if not exists userInfo (UserID integer PRIMARY KEY references users(login),role text default 'student', mygroup varchar(10) default '-');",(err,res)=>{
-            if(err)
-                console.error(err)
-        })*/
-        client.query("create table if not exists questions (questID serial PRIMARY KEY,theme text default 'neutral',level integer NOT NULL,type text NOT NULL,question text NOT NULL UNIQUE, cases text default '-',answer text NOT NULL, delted bool default false);",(err,res)=>{
-            if(err)
+        client.query("create table if not exists users (login text PRIMARY KEY,password text NOT NULL,name text default '-', user_group text default '-',role text default 'user')", (err, res) => {
+            if (err)
                 console.error(err)
         })
-        client.query("create table if not exists users (login text PRIMARY KEY,password text NOT NULL,name text default '-', user_group text default '-',role text default 'user')",(err,res)=>{
-            if(err)
+        client.query("create table if not exists results (testID serial PRIMARY KEY, userid text references users(login) ON DELETE CASCADE,level int NOT NULL, rightAnswers int NOT NULL, wrongAnswers int NOT NULL)", (err, res) => {
+            if (err)
                 console.error(err)
+        })
+        client.query("create table if not exists resultinfo (testID int references results ON DELETE CASCADE,questID int references questions, answer text default '-', result boolean NOT NULL)", (err, res) => {
+
         })
         //тут же триггеры и пользовательские функции создать
-    }    
-    //Модуль тестирования
-    async getIds(){
-        var {rows}=await client.query({text:'SELECT questID from questions WHERE delted=false'})
+    }
+    /* #region  Модуль тестирования */
+    async getUserAverageLevel(login) {
+        var { rows } = await client.query({ text: 'SELECT round(AVG(level)) as al FROM results WHERE userid=$1::text', values:[login] })
         return rows
     }
-    async getQuest(id){
-        var {rows}=await client.query({text:'SELECT questID, question, cases FROM questions WHERE $1=questID ',values:[id]})
+    async getRandomQuestion(al,tested){                
+        var tst=''        
+        if(tested.length>0){
+            tst='AND questID != ANY (ARRAY ['                
+            tested.forEach(el=>{
+                tst+=el+','
+            })
+            tst=tst.slice(0,-1)
+            tst+='])'
+        }
+        var {rows}= await client.query({text:'SELECT questID,question,cases,type FROM questions WHERE level=$1'+tst+'AND delted=false ORDER BY random() LIMIT 1',values:[al]})
         return rows
     }
-    //Модуль авторизации
-    async addUser(login,password){
-        var registered=true
-        try{
-        await client.query({text:'INSERT INTO users (login,password) values ($1::text,$2::text)', 
-                            values:[login,password]})
-        }catch(err){
-            registered=false
+    //устаревшая
+    async getIds() {
+        var { rows } = await client.query({ text: 'SELECT questID from questions WHERE delted=false' })
+        return rows
+    }
+    async getQuest(id) {
+        var { rows } = await client.query({ text: 'SELECT questID, question, cases FROM questions WHERE $1=questID ', values: [id] })
+        return rows
+    }
+    /* #endregion */
+    /* #region  Модуль авторизации */
+    async addUser(login, password) {
+        var registered = true
+        try {
+            await client.query({
+                text: 'INSERT INTO users (login,password) values ($1::text,$2::text)',
+                values: [login, password]
+            })
+        } catch (err) {
+            registered = false
         }
         return registered
     }
-    async checkLogin(login,password){
-        var {rows}=await client.query({
-            text:'SELECT role,login FROM users WHERE $1::text=login AND $2::text=password',
-            values:[login,password]
+    async checkLogin(login, password) {
+        var { rows } = await client.query({
+            text: 'SELECT role,login FROM users WHERE $1::text=login AND $2::text=password',
+            values: [login, password]
         })
         return rows
     }
-    //Модуль редактирования
-    async deleteQuestion(id){
-        client.query({text:'UPDATE questions SET delted=true WHERE questID=$1',values:[id]})
+    /* #endregion */
+    /* #region  Модуль редактирования */
+    async deleteQuestion(id) {
+        client.query({ text: 'UPDATE questions SET delted=true WHERE questID=$1', values: [id] })
     }
-    async getQuestionThemes(type='all'){     //Получаю темы из таблицы
+    async getQuestionThemes(type = 'all') {     //Получаю темы из таблицы
         var res
-        if(type!=='all')
-            res=await client.query({text:"SELECT DISTINCT theme FROM questions WHERE type=$1",values:[type]})        
-        else{
-            res=await client.query({text:"SELECT DISTINCT theme FROM questions"})        
+        if (type !== 'all')
+            res = await client.query({ text: "SELECT DISTINCT theme FROM questions WHERE type=$1", values: [type] })
+        else {
+            res = await client.query({ text: "SELECT DISTINCT theme FROM questions" })
         }
-        var {rows}=res
+        var { rows } = res
         return rows
     }
-    async getThemeQuestions(theme,type){
+    async getThemeQuestions(theme, type) {
         var res
-        if(type==='all')
-            res=await client.query({text:"SELECT * FROM questions WHERE $1::text=theme AND delted=false", values:[theme]})
+        if (type === 'all')
+            res = await client.query({ text: "SELECT * FROM questions WHERE $1::text=theme AND delted=false", values: [theme] })
         else
-            res=await client.query({text:"SELECT * FROM questions WHERE $1::text=theme AND type=$2::text AND delted=false", values:[theme,type]})        
-        var {rows}=res
+            res = await client.query({ text: "SELECT * FROM questions WHERE $1::text=theme AND type=$2::text AND delted=false", values: [theme, type] })
+        var { rows } = res
         return rows
     }
-    async addQuestion(type,theme,level,quest,cases,answer){  //Добавляю вопросы в таблицу
+    async addQuestion(type, theme, level, quest, cases, answer) {  //Добавляю вопросы в таблицу
         client.query({
-            text:'INSERT INTO questions (type,theme,level,question,cases,answer) values ($1::text,$2::text,$3,$4::text,$5::text,$6::text)',
-            values: [type,theme,level,quest,cases,answer]
-        },(err,res)=>{
-            if(err)
-            {
-                if(err.constraint!=='questions_question_key'){
+            text: 'INSERT INTO questions (type,theme,level,question,cases,answer) values ($1::text,$2::text,$3,$4::text,$5::text,$6::text)',
+            values: [type, theme, level, quest, cases, answer]
+        }, (err, res) => {
+            if (err) {
+                if (err.constraint !== 'questions_question_key') {
                     console.log(err)
                 }
             }
-                
+
         })
     }
-    async customGet(request){
+    async customGet(request) {
         return await client.query(request)
     }
-    async customAdd(request){
+    async customAdd(request) {
         client.query(request)
     }
+    /* #endregion */
 }
-module.exports.myPg=myPg
+module.exports.myPg = myPg

@@ -1,7 +1,5 @@
 const {myPg}=require('./server/postgre')
 var pg=new myPg()   //Соединяю с бд
-const {Parser}=require('./server/parser')
-var parser=new Parser()
 
 //Создаем сервер и настраиваем его
 const path=require('path')

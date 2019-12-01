@@ -42,7 +42,7 @@ class Parser{
                     question.type=currentType               
                     globalRes.push(question)
                     question={} //УДАЛИТЬ ССЫЛКУ НА СТАРТОВЫЙ ОБЪЕКТ
-                    question.cases='-'
+                    //question.cases='-'
                 }
                 else if(!endBlock){
                     //console.log('block '+statement.block+' ends')
@@ -99,6 +99,9 @@ class Parser{
                                     break
                                 case 'answ':
                                     question.answ=splted.slice(1).join(' ')
+                                    break
+                                case 'cases':
+                                    question.cases=splted.slice(1).join(' ')
                                     break
                                 default:
                                     break

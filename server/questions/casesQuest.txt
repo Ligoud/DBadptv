@@ -10,5 +10,6 @@ block{
     question{
         quest:question4
         answ:answ4
+	cases: ans1;ans2;ans3;answ4
     }#
 }#
