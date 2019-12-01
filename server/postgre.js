@@ -49,8 +49,8 @@ class myPg {
         return rows
     }
     async checkQuestion(questID,answer){
-        var {rows}=await client.query({text:'SELECT answer FROM questions WHERE questID=$1::text',values:[questID]})
-        var res={isRight:false,rightAnswer:rows[0].answer}
+        var {rows}=await client.query({text:'SELECT answer FROM questions WHERE questID=$1',values:[questID]})
+        var res={isRight:false,rightAnswer:rows[0].answer}  //isright -правильно ответил? rightanswer - правильный ответ
         if(res.rightAnswer===answer)
             res.isRight=true
         return res

@@ -67,6 +67,7 @@ document.getElementsByClassName('Accept')[0].addEventListener('click',(ev)=>{   
     const currQuest=allQuestions[allQuestions.length-1]
     obj.questid=currQuest.questid
     obj.answer=''
+    obj.login=window.sessionStorage.getItem('login')
     if(currQuest.type==='openQuest'){
         obj.answer=document.getElementById('txtarea').value
     }
