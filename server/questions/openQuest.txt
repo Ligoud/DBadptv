@@ -1,14 +1,26 @@
 header{
-	level: 4
-	theme: theme1
+	level: 1
+	theme: Вопросы такие же как и ответы
 }#
 block{
 	question{
-		quest: questionForTheme1
-		answ: answerForQuestion
+		quest: Вопрос
+		answ: Вопрос
 	}#
     question{
-        quest: myQuest
-        answ: myansw
+        quest: Вопрос1
+        answ: Вопрос1
+    }#
+    question{
+        quest: Вопрос2
+        answ: Вопрос2
+    }#
+    question{
+        quest: Вопрос3
+        answ: Вопрос3
+    }#
+    question{
+        quest: Вопрос4
+        answ: Вопрос4
     }#
 }#

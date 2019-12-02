@@ -6,14 +6,18 @@ class Test{
         this.users={}
     }
     async getQuestion(login){
-        var quest=await pg.getRandomQuestion(this.users[login].currentlvl,this.users[login].testequestions)
-        this.users[login].testequestions.push(quest[0].questid)
+        var quest=[]
+        //Вопросов должно быть достаточное количество (как минимум 20 в каждом лвле)
+        quest=await pg.getRandomQuestion(this.users[login].currentlvl,this.users[login].testedquestions)
+        if(quest.length===0)
+            quest=await pg.getRandomQuestion(this.users[login].currentlvl,[])
+        this.users[login].testedquestions.add(quest[0].questid)
         return quest[0] //Возвращаю объект вопроса
     }
     async getStarded(login){    //Проверяем с чего начать тестирование
         this.users[login]={}
         this.users[login].currentlvl=1
-        this.users[login].testequestions=[]
+        this.users[login].testedquestions=new Set()
         this.users[login].rights=0
         this.users[login].wrongs=0
         var res=await pg.getUserAverageLevel(login)
@@ -49,6 +53,13 @@ class Test{
                 }
             }
         }
+        var obj={
+            right:res.isRight,
+            endtest:false
+        }
+        if(this.users[answerObj.login].rights+this.users[answerObj.login].left===20)
+            obj.endtest=true
+        return obj
     }
 }
 

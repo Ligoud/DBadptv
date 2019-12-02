@@ -1,15 +1,32 @@
 header{
 	level: 2
-	theme: themeName
+	theme: Верный вариант который в вопросе
 }#
 block{
 	question{
-		quest: question3
-		answ: answer3
+		quest: Вопрос1
+		answ: ответ1
+		cases: ответ1;ответ2;ответ3;
 	}#
     question{
         quest:question4
         answ:answ4
+	cases: ans1;ans2;ans3;answ4
+    }#
+}#
+
+header{
+	level: 3
+}#
+block{
+	question{
+		quest: Вопрос2
+		answ: ответ2
+		cases: ответ1;ответ2;ответ3;
+	}#
+    question{
+        quest:question3
+        answ:ans3
 	cases: ans1;ans2;ans3;answ4
     }#
 }#

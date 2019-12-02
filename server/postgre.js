@@ -26,25 +26,28 @@ class myPg {
                 console.error(err)
         })
         client.query("create table if not exists resultinfo (testID int references results ON DELETE CASCADE,questID int references questions, answer text default '-', result boolean NOT NULL)", (err, res) => {
-
         })
-        //тут же триггеры и пользовательские функции создать
+        //client.query("create function to_lowercase() returns trigger as $to_lowercase$ begin NEW.question := lower(NEW.question); NEW.theme := lower(NEW.theme); NEW.answer:=lower(NEW.answer); return NEW; end; $to_lowercase$ language plpgsql;")
+        //client.query("CREATE TRIGGER to_lowercase BEFORE INSERT ON questions FOR EACH ROW EXECUTE PROCEDURE to_lowercase();")s        
     }
     /* #region  Модуль тестирования */
     async getUserAverageLevel(login) {
         var { rows } = await client.query({ text: 'SELECT round(AVG(level)) as al FROM results WHERE userid=$1::text', values:[login] })
         return rows
     }
-    async getRandomQuestion(al,tested){                
+    async getRandomQuestion(al,testedSet){                
         var tst=''        
+        var tested=Array.from(testedSet)
         if(tested.length>0){
-            tst='AND questID != ANY (ARRAY ['                
+            tst='AND questID != ALL (ARRAY ['                
             tested.forEach(el=>{
                 tst+=el+','
             })
             tst=tst.slice(0,-1)
             tst+='])'
         }
+        //console.log(tst)
+        //console.log(al)
         var {rows}= await client.query({text:'SELECT questID,question,cases,type FROM questions WHERE level=$1'+tst+'AND delted=false ORDER BY random() LIMIT 1',values:[al]})
         return rows
     }

@@ -27,38 +27,49 @@ document.getElementById('start').addEventListener('click',(e)=>{
 })
 
 function setQuestion(questObj){     //Отрисовка вопросов на странице
+    document.getElementById('answer').innerHTML=''
     document.querySelector('#question code').innerText=questObj.question
+    document.querySelector('#map ul').innerHTML+='<li name="li'+allQuestions.length+'">'+allQuestions.length
     if(questObj.type==='openQuest'){
         createOpen()
     }else if(questObj.type==='casesQuest'){
-        createCases('c1;;c2;;c3;;c4')
+        createCases(questObj.cases)
     }
 }
+//var cbox=document.getElementById('checkboxExample').cloneNode(true)
+var openInput=document.getElementById('openExample').cloneNode(true)
 function createOpen(){  //Открывает форму для ввода ответа
     console.log('OPEN')
-    document.getElementById('openExample').removeAttribute('data-disabled')
+    openInput.removeAttribute('data-disabled')
+    document.getElementById('answer').insertAdjacentElement('beforeend',openInput)
 }
 function createCases(cases){   //На вход получает строку с вариантами ответа на выходе - отображение на страничке вариантов ответа
-    var arr=cases.split(';;')
+    var arr=cases.split(';')
     var col=1,row=1,i=1
-    arr.forEach(el => {
-        console.log(el)
-        var cbox=document.getElementById('checkboxExample').cloneNode(true)
-        cbox.removeAttribute('data-disabled')
-        var check=cbox.children[0].children[0]              
+    arr.forEach(el => {    
+        console.log(el)    
+        var label=document.createElement('label'),
+            input=document.createElement('input')
+            span=document.createElement('span')
+        //var check=cbox.children[0].children[0]              
         //console.log(cbox)
-        cbox.children[0].children[1].innerText=el
-        check.name='case'+i
-        check.classList.add(('col'+col),('row'+row))        
-        row++
-        i++        
-        if(row>3){
-            row=1
-            col++
+        if(el!=='' && el.replace(/\s/g,'')!==''){
+            span.innerText=el
+            input.name='case'+i
+            input.classList.add(('col'+col),('row'+row))        
+            input.setAttribute('type','checkbox')
+            row++
+            i++        
+            if(row>3){
+                row=1
+                col++
+            }
+            if(col>3)
+                col=1
+            label.insertAdjacentElement('beforeend',input)
+            label.insertAdjacentElement('beforeend',span)
+            document.getElementById('answer').insertAdjacentElement('beforeend',label)
         }
-        if(col>3)
-            col=1
-        document.getElementById('answer').insertAdjacentElement('beforeend',cbox)
     });
 }
 
@@ -81,6 +92,7 @@ document.getElementsByClassName('Accept')[0].addEventListener('click',(ev)=>{   
         if(obj.answer!=='')
             obj.answer=obj.answer.slice(0,-1)
     }
+    obj.answer=obj.answer.toLowerCase()
     console.log(obj)
     var formData=new FormData()
     var xhr=new XMLHttpRequest()
@@ -94,12 +106,19 @@ document.getElementsByClassName('Accept')[0].addEventListener('click',(ev)=>{   
         {
             if(xhr.status===200){
                 var res=JSON.parse(xhr.response)
-                if(res.endtest!==undefined){
+                if(res.endtest===true){
                     //Вывести страницу окончания тестирования
-                }else{
-                    var res=JSON.parse(xhr.response)
-                    allQuestions.push(res)
-                    setQuestion(res)
+                }else{  //Отрисовка следующего вопроса тут                    
+                    //var res=JSON.parse(xhr.response)
+                    if(res.isRight){
+                        document.querySelector('li[name="li'+allQuestions.length+'"]').setAttribute('right','')
+                        alert("Вы ответили правильно!")                        
+                    }else{
+                        document.querySelector('li[name="li'+allQuestions.length+'"]').setAttribute('failed','')
+                        alert("Вы ответили неверно!")
+                    }
+                    allQuestions.push(res.question)
+                    setQuestion(res.question)
                 }
             }else{
                 console.log(xhr.status)
