@@ -24,6 +24,7 @@ router.delete('/:id',async (req,res)=>{
     pg.deleteQuestion(req.params.id)
 })
 router.get('/themes/:type/:nameTheme',async (req,res)=>{   //Получаю список вопросо по нужной теме
+    console.log(req.params.nameTheme,req.params.type)
     let quests=await pg.getThemeQuestions(req.params.nameTheme,req.params.type)
     res.send(JSON.stringify(quests.map((el)=>{
         return {questid:el.questid,question:el.question}

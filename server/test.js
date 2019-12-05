@@ -29,6 +29,9 @@ class Test{
     getRightAnswers(login){
         return this.users[login].rightAnswers
     }
+    getLevel(login){
+        return this.users[login].currentlvl
+    }
     async checkAnswer(answerObj){   //Тут ошибка integer=text 
         var res=await pg.checkQuestion(answerObj.questid,answerObj.answer)
         this.users[answerObj.login].totalQuests++
@@ -63,7 +66,8 @@ class Test{
         }
         var obj={
             right:res.isRight,
-            endtest:false
+            endtest:false,
+            
         }
         if(this.users[answerObj.login].totalQuests===20)
             obj.endtest=true

@@ -142,10 +142,11 @@ var asnwerButton=(ev)=>{   //Пользоавтель нажал на ответ
                     alertRow+='\n\nТестирование завершено'
                     document.querySelector('#map ul').innerHTML+='<li onclick="res_clicked(event)" ><b>!</b>'
                     TestEnds=true
-                    endTest(res.rightAnswers)
+                    endTest(res.rightAnswers,res.level)
                     console.log(res)
                 }else{  //Отрисовка следующего вопроса тут                    
                     allQuestions.push(res.question)
+                    console.log(allQuestions)
                     setQuestion(res.question)
                 }
                 alert(alertRow)
@@ -164,21 +165,28 @@ function res_clicked(ev='') {
     document.getElementById('answer').setAttribute('data-disabled','')
     document.getElementById('bottom').setAttribute('data-disabled','')
 }
-function endTest(rightAnswers) {
+function endTest(rightAnswers,level) {
     var tbl=document.querySelector('table')
     for(let i=0;i<20;i++){
         var tr=document.createElement('tr'),
             td1=document.createElement('td'),
             td2=document.createElement('td'),
             td3=document.createElement('td')
-        td1.innerText=allQuestions[i].questionid
-        td2.innerText=allQuestions[i].answer
+        td1.innerText=allQuestions[i].questid
+        td2.innerText=allQuestions[i].userAns
         td3.innerText=rightAnswers[i]
         tr.insertAdjacentElement('beforeend',td1)
         tr.insertAdjacentElement('beforeend',td2)
         tr.insertAdjacentElement('beforeend',td3)        
         tbl.insertAdjacentElement('beforeend',tr)        
     }
+    var trr=document.createElement('tr'),
+        tdr=document.createElement('td')
+    tdr.setAttribute('colspan','3')
+    tdr.innerText='Вы остановились на '+level+'м уровне сложности вопросов'
+    trr.insertAdjacentElement('beforeend',tdr)
+    tbl.insertAdjacentElement('beforeend',trr)
+
     res_clicked()
 }
 document.querySelector('th').addEventListener('click',endTest)

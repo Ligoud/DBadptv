@@ -166,3 +166,13 @@ document.getElementsByClassName('btn-2')[0].addEventListener('click',()=>{
     }
     x.send()
 })
+
+//document.getElementsByClassName('questPart').addEventListener('')
+function change(id) {
+    var xhr=new XMLHttpRequest()
+    xhr.open(
+        'GET',
+        window.location.href+'/getQuest/'+
+    )
+    //////////////////
+}

@@ -6,6 +6,32 @@
     <link rel="stylesheet" href="../public/css/admin.css">
 </head>
 <body>
+    <div id="disableWindow" class="disable" data-disabled>
+        <div id="questEdit">
+            <span>Вопрос:</span>
+            <textarea name="" id="questionEdit"></textarea>
+            <br>
+            <div class="p">
+                    <span >Тип вопроса:</span><br>        
+                    <label for="r1">
+                        <input type="radio" name="type">    
+                        <span>Открытый</span>            
+                    </label><br>        
+                    <label>
+                        <input type="radio" name="type">
+                        <span>С вариантами ответа</span>        
+                    </label>
+            </div>
+            <br>
+            <span>Ответ:</span>
+            <textarea name="" id="answerEdit"></textarea>
+            <div class="btnSpot">
+                <div id="close">Закрыть</div>
+                <div id="ok">Изменить</div>
+            </div>
+        </div>
+    </div>
+
     <div class="questBoxHeader">
         <span id='header'>Список вопросов</span>
     </div>

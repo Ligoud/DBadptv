@@ -126,3 +126,66 @@ input[type='radio']{
 option:disabled{
     display: none;
 }
+
+#disableWindow.disable{
+    background: rgba(95, 95, 95, 0.555);
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+}
+#questEdit{
+    position: absolute;
+    border: 3px solid black;
+    border-radius: 25px 0;
+    background: white;
+    width: 60%;
+    height:60%;
+    margin-left: 20%;
+    margin-top: 10vh;
+    z-index: 10;
+    padding-left: 10%;
+    padding-top: 2%;
+    box-sizing: border-box;
+    textarea{        
+        position: absolute;
+        border: 1px solid black;
+        background: rgba(137, 164, 196, 0.336);
+        height: 20%;
+        width: 60%;
+        max-width: 60%;
+        max-height: 20%;
+    }
+    .p{
+        margin-top: 12%;
+    }
+    .btnSpot{
+        margin-top: 10%;    
+        div{           
+            position: absolute;        
+            margin-top: 10vh;
+            display: inline-block;
+            max-width: 70px;
+            border: 1px solid black;
+            padding:5px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            &#close{
+                margin-left: -10%;
+                &:hover{
+                    background: rgb(255, 54, 60);
+                }
+            }
+            &#ok{
+                margin-left: 70%;
+                &:hover{
+                    background: #28c45c;
+                }
+            }
+        }
+    }
+}
+[data-disabled]{
+    display: none;
+}
+

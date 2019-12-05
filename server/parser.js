@@ -30,7 +30,10 @@ class Parser{
         var result=[]
         //console.log('started new')
         readline.on('line',(line)=>{
-            line=line.replace(/\s/g,'')            
+            //console.log(line)            
+            //line=line.replace(/\s/g,'')            
+            line=line.trimLeft()
+            //console.log(line)
             let splted=[]
             if(line==='}#'){
                 //console.log(endQuest+' '+endBlock)
@@ -38,8 +41,8 @@ class Parser{
                     endQuest=true
                     //console.log(question) 
                     question.level=header.level
-                    question.theme=header.theme    
-                    question.type=currentType               
+                    question.theme=header.theme.trim() 
+                    question.type=currentType
                     globalRes.push(question)
                     question={} //УДАЛИТЬ ССЫЛКУ НА СТАРТОВЫЙ ОБЪЕКТ
                     //question.cases='-'
@@ -95,10 +98,10 @@ class Parser{
                             splted=line.split(':')
                             switch(splted[0]){
                                 case 'quest':
-                                    question.quest=splted.slice(1).join(' ')
+                                    question.quest=splted.slice(1).join(' ').trim()
                                     break
                                 case 'answ':
-                                    question.answ=splted.slice(1).join(' ')
+                                    question.answ=splted.slice(1).join(' ').trim()
                                     break
                                 case 'cases':
                                     question.cases=splted.slice(1).join(' ')

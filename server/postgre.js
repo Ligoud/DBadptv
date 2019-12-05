@@ -93,6 +93,10 @@ class myPg {
     async deleteQuestion(id) {
         client.query({ text: 'UPDATE questions SET delted=true WHERE questID=$1', values: [id] })
     }
+    async getQuestion(id){
+        var {rows}=await client.query({text:'SELECT * FROM questions WHERE questID=$1',values:[id]})
+        return rows;
+    }
     async getQuestionThemes(type = 'all') {     //Получаю темы из таблицы
         var res
         if (type !== 'all')

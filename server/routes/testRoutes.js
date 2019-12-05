@@ -18,12 +18,13 @@ router.get('/startTest/:login',async (req,res)=>{
 router.post('/answer',async(req,res)=>{
     var answer=JSON.parse(req.fields.answer)
     var obj=await test.checkAnswer(answer) //Возвращается верно ли ответил пользователь
-    var quest,testRes=''
+    var quest,testRes='',lvl=1
     if(!obj.endtest)
         quest=await test.getQuestion(answer.login)
     else{
         testRes=test.getRightAnswers(answer.login)
+        lvl=test.getLevel(answer.login)
     }
-    res.send(JSON.stringify({question:quest,isRight:obj.right,endtest:obj.endtest,rightAnswers:testRes}))
+    res.send(JSON.stringify({question:quest,isRight:obj.right,endtest:obj.endtest,rightAnswers:testRes,level:lvl}))
 })
 module.exports=router
