@@ -16,8 +16,14 @@ router.get('/startTest/:login',async (req,res)=>{
     //res.send(JSON.stringify({arrID:ids}))
 })
 router.post('/answer',async(req,res)=>{
-    var obj=await test.checkAnswer(JSON.parse(req.fields.answer)) //Возвращается верно ли ответил пользователь
-    var quest=await test.getQuestion(JSON.parse(req.fields.answer).login)
-    res.send(JSON.stringify({question:quest,isRight:obj.right,endtest:obj.endtest}))
+    var answer=JSON.parse(req.fields.answer)
+    var obj=await test.checkAnswer(answer) //Возвращается верно ли ответил пользователь
+    var quest,testRes=''
+    if(!obj.endtest)
+        quest=await test.getQuestion(answer.login)
+    else{
+        testRes=test.getRightAnswers(answer.login)
+    }
+    res.send(JSON.stringify({question:quest,isRight:obj.right,endtest:obj.endtest,rightAnswers:testRes}))
 })
 module.exports=router

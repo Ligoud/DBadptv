@@ -181,4 +181,14 @@ input[type='checkbox'] {
 input[type='checkbox'].col2 {
   margin-left: 20%;
 }
+
+#result {
+  position: relative;
+  margin-left: 30%;
+}
+
+tr td {
+  text-align: center;
+  overflow: hidden;
+}
 /*# sourceMappingURL=test.css.map */
