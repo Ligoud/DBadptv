@@ -188,6 +188,7 @@ option:disabled {
 }
 
 #disableWindow.disable {
+  position: absolute;
   background: rgba(95, 95, 95, 0.555);
   width: 100vw;
   height: 100vh;
@@ -220,6 +221,14 @@ option:disabled {
   max-height: 20%;
 }
 
+#questEdit .e2 {
+  margin-top: 12%;
+}
+
+#questEdit .e3 {
+  margin-top: 12%;
+}
+
 #questEdit .p {
   margin-top: 12%;
 }
@@ -230,7 +239,7 @@ option:disabled {
 
 #questEdit .btnSpot div {
   position: absolute;
-  margin-top: 10vh;
+  margin-top: 5%;
   display: inline-block;
   max-width: 70px;
   border: 1px solid black;

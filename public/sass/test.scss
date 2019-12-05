@@ -129,11 +129,7 @@
 }
 
 input[type='checkbox']{
-    width: 30px;
-    height: 30px;
-    &.col2{
-        margin-left: 20%;
-    }
+    
 }
 #result{
     position: relative;
@@ -143,4 +139,23 @@ input[type='checkbox']{
 tr td{
     text-align: center;
     overflow: hidden;
+}
+#openExample{
+    margin-top: 1%;
+    textarea{
+        max-height: 100px;
+        max-width: 100%;
+    }
+}
+#checkboxExample{
+    margin-top: 10%;
+    overflow-x: hidden;
+    input[type='checkbox']{
+        display: inline-block;
+        margin-bottom: -30px;
+    }
+    label{
+        margin-top: -15px;
+        margin-right: 20px;
+    }
 }

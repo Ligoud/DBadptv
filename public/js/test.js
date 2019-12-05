@@ -28,7 +28,7 @@ document.getElementById('start').addEventListener('click',(e)=>{
 })
 
 function setQuestion(questObj){     //Отрисовка вопросов на странице
-    document.getElementById('answer').innerHTML=''
+    document.getElementById('answer').innerHTML=''    
     document.querySelector('#question code').innerText=questObj.question
     document.querySelector('#map ul').innerHTML+='<li name="li'+allQuestions.length+'" onclick="li_clicked(event)">'+allQuestions.length
     if(questObj.type==='openQuest'){
@@ -65,6 +65,8 @@ function createOpen(answered=''){  //Открывает форму для вво
 function createCases(cases){   //На вход получает строку с вариантами ответа на выходе - отображение на страничке вариантов ответа
     var arr=cases.split(';')
     var col=1,row=1,i=1
+    var divel=document.createElement('div')
+    divel.setAttribute('id','checkboxExample')            
     arr.forEach(el => {    
         console.log(el)    
         var label=document.createElement('label'),
@@ -86,10 +88,11 @@ function createCases(cases){   //На вход получает строку с 
             if(col>3)
                 col=1
             label.insertAdjacentElement('beforeend',input)
-            label.insertAdjacentElement('beforeend',span)
-            document.getElementById('answer').insertAdjacentElement('beforeend',label)
+            label.insertAdjacentElement('beforeend',span)            
+            divel.insertAdjacentElement('beforeend',label)
         }
     });
+    document.getElementById('answer').insertAdjacentElement('beforeend',divel)
 }
 var asnwerButton=(ev)=>{   //Пользоавтель нажал на ответить на вопрос
     var obj={}        
@@ -97,7 +100,6 @@ var asnwerButton=(ev)=>{   //Пользоавтель нажал на ответ
     obj.questid=currQuest.questid
     obj.answer=''
     obj.login=window.sessionStorage.getItem('login')
-    
     if(ev.target.classList.contains('Accept')){
         if(currQuest.type==='openQuest'){
             obj.answer=document.getElementById('txtarea').value
@@ -113,13 +115,16 @@ var asnwerButton=(ev)=>{   //Пользоавтель нажал на ответ
                 obj.answer=obj.answer.slice(0,-1)
         }
         obj.answer=obj.answer.toLowerCase()
-        obj.answer=obj.answer.trim()
+        obj.answer=obj.answer.replace(/\n/,'').trim()
         console.log(obj)
     }
+    document.querySelector('#txtarea').value=''
+
     allQuestions[allQuestions.length-1].userAns=obj.answer
     var formData=new FormData()
     var xhr=new XMLHttpRequest()
     formData.append('answer',JSON.stringify(obj))
+    
     xhr.open(
         'POST',
         window.location.href+'/answer'

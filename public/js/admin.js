@@ -92,6 +92,8 @@ function addLine(id='NUM',question='question'){
     a1.insertAdjacentElement('beforeend',span1)
     divTxt.insertAdjacentElement('beforeend',a1)
     divTxt.classList.add('questPart')
+    divTxt.setAttribute('data-id',id)
+    divTxt.addEventListener('click',change)
     //
     divR.classList.add('row')
     divR.insertAdjacentElement('beforeend',divNum)
@@ -149,7 +151,7 @@ document.getElementsByClassName('btn-2')[0].addEventListener('click',()=>{
         'GET',
         url
     )
-    alert(url)
+    //alert(url)
     x.onload=function(e){
         if(x.readyState==4) //done
         {
@@ -167,12 +169,56 @@ document.getElementsByClassName('btn-2')[0].addEventListener('click',()=>{
     x.send()
 })
 
+function changeBoxCreate(quest){
+    document.getElementById('disableWindow').removeAttribute('data-disabled')
+    document.getElementById('questionEdit').innerText=quest.question
+    document.getElementById('answerEdit').innerText=quest.answer
+    document.getElementById('casesEdit').innerText=quest.cases
+}
 //document.getElementsByClassName('questPart').addEventListener('')
-function change(id) {
+var ID=0
+function change(ev) {
     var xhr=new XMLHttpRequest()
+    var el=ev.target
+    while(!el.classList.contains('questPart')){
+        el=el.parentElement
+    }
+    var id=el.getAttribute('data-id')
+    ID=id
     xhr.open(
         'GET',
-        window.location.href+'/getQuest/'+
+        window.location.href+'/getQuest/'+id
     )
+    console.log('asdasd')
+    xhr.onload=function(e){
+        if(xhr.readyState==4)//ok
+        {
+            if(xhr.status==200){
+                var res=JSON.parse(xhr.response)
+                console.log(res)
+                changeBoxCreate(res[0])
+            }else{
+                console.log(xhr.statusText)
+            }
+        }
+    }
+    xhr.send()
     //////////////////
 }
+document.getElementById('close').addEventListener('click',(ev)=>{
+    document.getElementById('disableWindow').setAttribute('data-disabled','')
+})
+document.getElementById('ok').addEventListener('click',(ev)=>{
+    var xhr=new XMLHttpRequest()
+    xhr.open(
+        'POST',
+        window.location.href+'/changeQuest'
+    )
+    var formdata=new FormData()
+    formdata.append('question',document.getElementById('questionEdit').value)
+    formdata.append('answer',document.getElementById('answerEdit').value)
+    formdata.append('cases',document.getElementById('casesEdit').value)
+    console.log(ID)
+    formdata.append('id',ID)
+    xhr.send(formdata)
+})

@@ -8,23 +8,20 @@
 <body>
     <div id="disableWindow" class="disable" data-disabled>
         <div id="questEdit">
-            <span>Вопрос:</span>
-            <textarea name="" id="questionEdit"></textarea>
-            <br>
-            <div class="p">
-                    <span >Тип вопроса:</span><br>        
-                    <label for="r1">
-                        <input type="radio" name="type">    
-                        <span>Открытый</span>            
-                    </label><br>        
-                    <label>
-                        <input type="radio" name="type">
-                        <span>С вариантами ответа</span>        
-                    </label>
+            <div class="e1">
+                <span>Вопрос:</span><br>
+                <textarea name="" id="questionEdit"></textarea>
+                <br>
             </div>
-            <br>
-            <span>Ответ:</span>
-            <textarea name="" id="answerEdit"></textarea>
+            <div class="e2">
+                <span>Варианты ответа(через ';'):</span><br>
+                <textarea name="" id="casesEdit" placeholder="Если это поле не заполнено - тип вопрос будет открытым, иначе - с вариантами ответа"></textarea>
+                <br>
+            </div>
+            <div class="e3">
+                <span>Ответ:</span><br>
+                <textarea name="" id="answerEdit"></textarea>
+            </div>
             <div class="btnSpot">
                 <div id="close">Закрыть</div>
                 <div id="ok">Изменить</div>

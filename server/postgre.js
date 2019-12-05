@@ -27,8 +27,10 @@ class myPg {
         })
         client.query("create table if not exists resultinfo (testID int references results ON DELETE CASCADE,questID int references questions, answer text default '-', result boolean NOT NULL)", (err, res) => {
         })
+        //client.query("create or replace function enableQuest() returns trigger as $enableQuest$ declare count RECORD begin SELECT COUNT(*) INTO count FROM questions WHERE questID=NEW.questID; IF(count > 0) THEN UPDATE questions SET delted=true WHERE questID=NEW.questID; END IF; return NEW; end; $enableQuest$ language plpgsql;")
+        //client.query("CREATE TRIGGER enableQuest BEFORE INSERT ON questions FOR EACH ROW EXECUTE PROCEDURE enableQuest();")
         //client.query("create function to_lowercase() returns trigger as $to_lowercase$ begin NEW.question := lower(NEW.question); NEW.theme := lower(NEW.theme); NEW.answer:=lower(NEW.answer); return NEW; end; $to_lowercase$ language plpgsql;")
-        //client.query("CREATE TRIGGER to_lowercase BEFORE INSERT ON questions FOR EACH ROW EXECUTE PROCEDURE to_lowercase();")s        
+        //client.query("CREATE TRIGGER to_lowercase BEFORE INSERT ON questions FOR EACH ROW EXECUTE PROCEDURE to_lowercase();")
     }
     /* #region  Модуль тестирования */
     async getUserAverageLevel(login) {
@@ -57,15 +59,6 @@ class myPg {
         if(res.rightAnswer===answer)
             res.isRight=true
         return res
-    }
-    //устаревшая
-    async getIds() {
-        var { rows } = await client.query({ text: 'SELECT questID from questions WHERE delted=false' })
-        return rows
-    }
-    async getQuest(id) {
-        var { rows } = await client.query({ text: 'SELECT questID, question, cases FROM questions WHERE $1=questID ', values: [id] })
-        return rows
     }
     /* #endregion */
     /* #region  Модуль авторизации */
@@ -96,6 +89,15 @@ class myPg {
     async getQuestion(id){
         var {rows}=await client.query({text:'SELECT * FROM questions WHERE questID=$1',values:[id]})
         return rows;
+    }
+    async addOrChangeQuestion(id,quest,type,answer,cases=''){
+        console.log(id)
+        var {rows}=await client.query({text:'SELECT questID FROM questions WHERE $1=questID',values:[id]})
+        if(rows.length>0){
+            client.query({text: 'UPDATE questions SET type=$1::text,question=$2::text,cases=$3::text,answer=$4::text WHERE questID=$5',values:[type,quest,cases,answer,id]})
+        }else{//Пока только обноваление
+            //client.query({text: 'INSERT INTO questions SET type=$1::text,question=$2::text,cases=$3::text,answer=$4::text WHERE questID=$5',values:[type,quest,cases,answer,id]})
+        }
     }
     async getQuestionThemes(type = 'all') {     //Получаю темы из таблицы
         var res

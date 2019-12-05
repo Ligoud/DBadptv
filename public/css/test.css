@@ -173,15 +173,6 @@
   max-height: 15vh;
 }
 
-input[type='checkbox'] {
-  width: 30px;
-  height: 30px;
-}
-
-input[type='checkbox'].col2 {
-  margin-left: 20%;
-}
-
 #result {
   position: relative;
   margin-left: 30%;
@@ -190,5 +181,29 @@ input[type='checkbox'].col2 {
 tr td {
   text-align: center;
   overflow: hidden;
+}
+
+#openExample {
+  margin-top: 1%;
+}
+
+#openExample textarea {
+  max-height: 100px;
+  max-width: 100%;
+}
+
+#checkboxExample {
+  margin-top: 10%;
+  overflow-x: hidden;
+}
+
+#checkboxExample input[type='checkbox'] {
+  display: inline-block;
+  margin-bottom: -30px;
+}
+
+#checkboxExample label {
+  margin-top: -15px;
+  margin-right: 20px;
 }
 /*# sourceMappingURL=test.css.map */

@@ -20,11 +20,18 @@ router.get('/themes/:type',async (req,res)=>{
     }))
     
 })
+router.get('/getQuest/:id',async (req,res)=>{
+    let quest=await pg.getQuestion(req.params.id)
+    res.send(JSON.stringify(quest))
+})
+router.post('/changeQuest',async (req,res)=>{
+    let type=req.fields.cases===''?'openQuest':'casesQuest'
+    pg.addOrChangeQuestion(req.fields.id,req.fields.question,type,req.fields.answer,req.fields.cases)
+})
 router.delete('/:id',async (req,res)=>{
     pg.deleteQuestion(req.params.id)
 })
 router.get('/themes/:type/:nameTheme',async (req,res)=>{   //Получаю список вопросо по нужной теме
-    console.log(req.params.nameTheme,req.params.type)
     let quests=await pg.getThemeQuestions(req.params.nameTheme,req.params.type)
     res.send(JSON.stringify(quests.map((el)=>{
         return {questid:el.questid,question:el.question}
