@@ -28,13 +28,13 @@ router.post('/changeQuest',async (req,res)=>{
     let type=req.fields.cases===''?'openQuest':'casesQuest'
     pg.addOrChangeQuestion(req.fields.id,req.fields.question,type,req.fields.answer,req.fields.cases)
 })
-router.delete('/:id',async (req,res)=>{
-    pg.deleteQuestion(req.params.id)
+router.delete('/:id/:delted',async (req,res)=>{
+    pg.deleteQuestion(req.params.id,req.params.delted)
 })
-router.get('/themes/:type/:nameTheme',async (req,res)=>{   //Получаю список вопросо по нужной теме
-    let quests=await pg.getThemeQuestions(req.params.nameTheme,req.params.type)
+router.get('/themes/:type/:nameTheme/:delted',async (req,res)=>{   //Получаю список вопросо по нужной теме
+    let quests=await pg.getThemeQuestions(req.params.nameTheme,req.params.type,req.params.delted)
     res.send(JSON.stringify(quests.map((el)=>{
-        return {questid:el.questid,question:el.question}
+        return {questid:el.questid,question:el.question,delted:req.params.delted}
     })))
 })
 router.get('/checkfiles',async (req,res)=>{

@@ -69,8 +69,11 @@ class Test{
             endtest:false,
             
         }
-        if(this.users[answerObj.login].totalQuests===20)
+        if(this.users[answerObj.login].totalQuests===20){
             obj.endtest=true
+            console.log(this.users[answerObj.login])
+            //Тут тест запоминать
+        }
         return obj
     }
 }

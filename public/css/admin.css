@@ -117,7 +117,7 @@ a {
   background: #a4b0be;
 }
 
-.delete {
+.delete, .undelete {
   background: #ff475659;
   position: relative;
   display: inline-block;
@@ -132,8 +132,16 @@ a {
   transition: .2s;
 }
 
-.delete:hover {
+.delete:hover, .undelete:hover {
   background: #ff4757;
+}
+
+.undelete {
+  background: #27ae6059;
+}
+
+.undelete:hover {
+  background: #27ae60;
 }
 
 .questID {

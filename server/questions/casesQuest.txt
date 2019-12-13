@@ -1,6 +1,6 @@
 header{
 	level: 2
-	theme: Верный вариант который в вопросе
+	theme: Тема1
 }#
 block{
 	question{

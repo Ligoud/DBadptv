@@ -33,6 +33,9 @@ class myPg {
         //client.query("CREATE TRIGGER to_lowercase BEFORE INSERT ON questions FOR EACH ROW EXECUTE PROCEDURE to_lowercase();")
     }
     /* #region  Модуль тестирования */
+    async addTestResult(resultsObj,resultInfoObj){
+        //client.query({text:'INSERT INTO results (userid,level,rightAnswers,wrongAnswers) values ($1::text,$2,$3,$4)', values:[]})
+    }
     async getUserAverageLevel(login) {
         var { rows } = await client.query({ text: 'SELECT round(AVG(level)) as al FROM results WHERE userid=$1::text', values:[login] })
         return rows
@@ -83,8 +86,9 @@ class myPg {
     }
     /* #endregion */
     /* #region  Модуль редактирования */
-    async deleteQuestion(id) {
-        client.query({ text: 'UPDATE questions SET delted=true WHERE questID=$1', values: [id] })
+    async deleteQuestion(id,delted) {
+        var undel=!!delted
+        client.query({ text: 'UPDATE questions SET delted=$2 WHERE questID=$1', values: [id,undel] })
     }
     async getQuestion(id){
         var {rows}=await client.query({text:'SELECT * FROM questions WHERE questID=$1',values:[id]})
@@ -109,12 +113,12 @@ class myPg {
         var { rows } = res
         return rows
     }
-    async getThemeQuestions(theme, type) {
+    async getThemeQuestions(theme, type,delted) {
         var res
         if (type === 'all')
-            res = await client.query({ text: "SELECT * FROM questions WHERE $1::text=theme AND delted=false", values: [theme] })
+            res = await client.query({ text: "SELECT * FROM questions WHERE $1::text=theme AND delted=$2", values: [theme,delted] })
         else
-            res = await client.query({ text: "SELECT * FROM questions WHERE $1::text=theme AND type=$2::text AND delted=false", values: [theme, type] })
+            res = await client.query({ text: "SELECT * FROM questions WHERE $1::text=theme AND type=$2::text AND delted=$3", values: [theme, type,delted] })
         var { rows } = res
         return rows
     }

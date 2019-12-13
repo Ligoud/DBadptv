@@ -118,7 +118,8 @@ var asnwerButton=(ev)=>{   //Пользоавтель нажал на ответ
         obj.answer=obj.answer.replace(/\n/,'').trim()
         console.log(obj)
     }
-    document.querySelector('#txtarea').value=''
+    if(document.querySelector('#txtarea'))
+        document.querySelector('#txtarea').value=''
 
     allQuestions[allQuestions.length-1].userAns=obj.answer
     var formData=new FormData()

@@ -1,7 +1,10 @@
 var chosenType='all'
 var chosenTheme=''
+var isDeleted=false
+
 function updateHeader(){
-    var forHeaderText='Список вопросов по теме "'+chosenTheme+'"'
+    var delText=isDeleted? 'удаленных ': ''
+    var forHeaderText='Список '+delText+'вопросов по теме "'+chosenTheme+'"'
         if(chosenType==='all')
             forHeaderText+=' для всех типов вопросов'
         else if(chosenType==='openQuest')
@@ -82,10 +85,10 @@ function addLine(id='NUM',question='question'){
     a.insertAdjacentElement('beforeend',span)   //X сделано
     a.setAttribute('data-delete','')
     divDel.insertAdjacentElement('beforeend',a) //div X сделан
-    divDel.classList.add('delete')
+    let classdel=isDeleted?'undelete':'delete'
+    divDel.classList.add(classdel)
     divDel.setAttribute('data-delete','')
     divDel.setAttribute('data-idRow',id)
-
     //
     //text
     span1.innerText=question
@@ -101,19 +104,21 @@ function addLine(id='NUM',question='question'){
     divR.insertAdjacentElement('beforeend',divDel)
     document.getElementsByClassName('questBox')[0].insertAdjacentElement('beforeend',divR)
 }
-function selectChange(ev){
+function selectChange(ev){  //Выбор темы из списка
+    isDeleted=document.getElementById('cb1').checked  //Какие вопросы показывать - удаленные или нет
+    console.log(isDeleted)
     var xhr=new XMLHttpRequest()    
     chosenTheme=ev.target.options[ev.target.selectedIndex].value
     
     xhr.open(
         'GET',
-        window.location.href+'/themes/'+chosenType+'/'+chosenTheme
+        window.location.href+'/themes/'+chosenType+'/'+chosenTheme+'/'+isDeleted
     )
     xhr.onload=function(e){
         if(xhr.readyState==4) //done
         {
             if(xhr.status==200){   //ok
-                let result=JSON.parse(xhr.response)
+                let result=JSON.parse(xhr.response)                                
                 document.getElementsByClassName('questBox')[0].innerHTML=''
                 updateHeader()
                 result.forEach(el=>{
@@ -137,9 +142,10 @@ document.addEventListener('click',function(e){  //Удаление строки
         xhr=new XMLHttpRequest()
         xhr.open(
             'DELETE',
-            window.location.href+'/'+el.getAttribute('data-idRow')
+            window.location.href+'/'+el.getAttribute('data-idRow')+'/'+isDeleted
         )
         xhr.send()
+        alert(isDeleted?'Вопрос был восстановлен':'Вопрос был удален')
         el.parentElement.parentElement.removeChild(el.parentElement)
     }
 })
@@ -177,7 +183,7 @@ function changeBoxCreate(quest){
 }
 //document.getElementsByClassName('questPart').addEventListener('')
 var ID=0
-function change(ev) {
+function change(ev) { 
     var xhr=new XMLHttpRequest()
     var el=ev.target
     while(!el.classList.contains('questPart')){
@@ -221,4 +227,5 @@ document.getElementById('ok').addEventListener('click',(ev)=>{
     console.log(ID)
     formdata.append('id',ID)
     xhr.send(formdata)
+    alert('Вопрос был изменен')
 })
