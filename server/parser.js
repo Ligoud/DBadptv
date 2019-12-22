@@ -13,7 +13,6 @@ var statement={
 var question={
     theme:'',
     level:0,
-    cases:'-',
     quest:'',
     answ:''
 }

@@ -31,6 +31,7 @@ function setQuestion(questObj){     //Отрисовка вопросов на �
     document.getElementById('answer').innerHTML=''    
     document.querySelector('#question code').innerText=questObj.question
     document.querySelector('#map ul').innerHTML+='<li name="li'+allQuestions.length+'" onclick="li_clicked(event)">'+allQuestions.length
+    console.log(questObj)
     if(questObj.type==='openQuest'){
         createOpen()
     }else if(questObj.type==='casesQuest'){
@@ -41,7 +42,7 @@ function li_clicked(ev) {   //Если сам пользователь прос�
     document.getElementById('answer').innerHTML=''
     const num= +ev.target.getAttribute('name').slice(2)
     const clicked_quest = allQuestions[num-1]
-    document.querySelector('#question code').innerText=clicked_quest.question
+    document.querySelector('#question code').innerText=clicked_quest.question    
     if(clicked_quest.type==='openQuest')
         createOpen()
     else
@@ -63,7 +64,8 @@ function createOpen(answered=''){  //Открывает форму для вво
     document.getElementById('answer').insertAdjacentElement('beforeend',openInput)
 }
 function createCases(cases){   //На вход получает строку с вариантами ответа на выходе - отображение на страничке вариантов ответа
-    var arr=cases.split(';')
+    console.log(cases)
+    var arr=cases
     var col=1,row=1,i=1
     var divel=document.createElement('div')
     divel.setAttribute('id','checkboxExample')            
