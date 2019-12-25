@@ -21,6 +21,11 @@ class Test{
         this.users[login].rights=0  //Верные ответы на данном уровне
         this.users[login].wrongs=0  //Неверные ответы на данном уровне
         this.users[login].rightAnswers=[]
+        this.users[login].answers=[]    //Ответы пользователя
+        this.users[login].ids=[] //id вопросов
+        this.users[login].result=[] //bool правильный ли ответ
+        this.users[login].totalRights=0   //Общее количество верных ответов
+        this.users[login].totalWrongs=0 //Общее количество неверных
         this.users[login].totalQuests=0
         var res=await pg.getUserAverageLevel(login)
         if(res[0].al!==null)
@@ -36,7 +41,11 @@ class Test{
         var res=await pg.checkQuestion(answerObj.questid,answerObj.answer)
         this.users[answerObj.login].totalQuests++
         this.users[answerObj.login].rightAnswers.push(res.rightAnswer)
-        if(res.isRight){
+        this.users[answerObj.login].ids.push(answerObj.questid)
+        this.users[answerObj.login].result.push(res.isRight)
+        this.users[answerObj.login].answers.push(answerObj.answer)
+        if(res.isRight){    //Если ответ верный
+            this.users[answerObj.login].totalRights++
             this.users[answerObj.login].rights++    //Увеличиваю правильные ответы
             let r=this.users[answerObj.login].rights,
                 w=this.users[answerObj.login].wrongs,
@@ -49,6 +58,7 @@ class Test{
                 }
             }
         }else{
+            this.users[answerObj.login].totalWrongs++
             this.users[answerObj.login].wrongs++    //Увеличиваю неправильные
             let r=this.users[answerObj.login].rights,
                 w=this.users[answerObj.login].wrongs,
@@ -71,8 +81,19 @@ class Test{
         }
         if(this.users[answerObj.login].totalQuests===20){
             obj.endtest=true
-            console.log(this.users[answerObj.login])
+            let resultObj={
+                userid: answerObj.login,
+                level: this.users[answerObj.login].currentlvl,
+                rights: this.users[answerObj.login].totalRights,
+                wrongs: this.users[answerObj.login].totalWrongs
+            }
+            let resultInfoObj={ //arrays all fields
+                questids: this.users[answerObj.login].ids,
+                answers: this.users[answerObj.login].answers,
+                results: this.users[answerObj.login].result
+            }
             //Тут тест запоминать
+            pg.addTestResult(resultObj,resultInfoObj)
         }
         return obj
     }

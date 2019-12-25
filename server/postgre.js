@@ -28,6 +28,7 @@ class myPg {
         })
         client.query("create table if not exists resultinfo (testID int references results ON DELETE CASCADE,questID int references questions, answer text default '-', result boolean NOT NULL)", (err, res) => {
         })
+
         client.query("create or replace function addQuest(text,text,integer,text,text,text) returns void as $$ declare res text[]; begin if(length($5)>0) then $5:=lower($5); res:=split($5); end if; INSERT INTO questions (type,theme,level,question,cases,answer) values ($1,$2,$3,$4,res,$6); end $$ language plpgsql;", (err, res) => { })
 
         client.query("create function to_lowercase() returns trigger as $to_lowercase$ begin NEW.question := lower(NEW.question); NEW.theme := lower(NEW.theme); NEW.answer:=lower(NEW.answer); return NEW; end; $to_lowercase$ language plpgsql;", (err, res) => { })
@@ -36,7 +37,20 @@ class myPg {
     }
     /* #region  Модуль тестирования */
     async addTestResult(resultsObj, resultInfoObj) {
-        //client.query({text:'INSERT INTO results (userid,level,rightAnswers,wrongAnswers) values ($1::text,$2,$3,$4)', values:[]})
+        console.log(resultsObj)
+        console.log(resultInfoObj)
+        let maxid=await client.query('select max(userid) from results')
+        if(maxid.rows[0].max===null){
+            maxid=0
+        }
+        maxid++;                    
+        await client.query({text:'INSERT INTO results (testid,userid,level,rightAnswers,wrongAnswers) values ($1,$2::text,$3,$4,$5)', 
+                      values:[maxid,resultsObj.userid,resultsObj.level,resultsObj.rights,resultsObj.wrongs]})
+        let len=resultInfoObj.questids.length
+        for(let i=0;i<len;i++){
+            client.query({text:'INSERT INTO resultinfo (testid,questid,answer, result) values ($1,$2,$3::text,$4)',
+                          values:[maxid,resultInfoObj.questids[i],resultInfoObj.answers[i],resultInfoObj.results[i]]})
+        }
     }
     async getUserAverageLevel(login) {
         var { rows } = await client.query({ text: 'SELECT round(AVG(level)) as al FROM results WHERE userid=$1::text', values: [login] })
